@@ -5,11 +5,9 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useSwipeable } from 'react-swipeable'
 
+import config from '../config'
 import { hasChildItems, transformData } from '../utils'
 import { MenuItemRecord, ThemeColorProp } from '../types'
-
-const TRANSITION_DURATION = 400
-const DEFAULT_HEADER_HEIGHT = 56
 
 export interface MobileMenuProps {
   headerHeight?: number
@@ -60,7 +58,7 @@ const StlyedMobileMenu = styled(Box, {
     theme,
     open,
     color = 'secondary',
-    headerHeight = DEFAULT_HEADER_HEIGHT
+    headerHeight = config.ResponsiveHeader.defaultProps.heightSm
   }) => ({
     position: 'absolute',
     background: theme.palette[color].main,
@@ -68,12 +66,12 @@ const StlyedMobileMenu = styled(Box, {
     top: 0,
     left: 0,
     zIndex: theme.zIndex.appBar + 1,
-    transition: `all  ${TRANSITION_DURATION}ms ease`,
+    transition: `all  ${config.MobileMenu.transitionDuration}ms ease`,
 
     '.MobileMenu-header': {
       height: headerHeight,
       opacity: 0,
-      transition: `all .2s ease ${TRANSITION_DURATION}ms`,
+      transition: `all .2s ease ${config.MobileMenu.transitionDuration}ms`,
       ...(open && {
         opacity: 1
       })
@@ -86,7 +84,9 @@ const StlyedMobileMenu = styled(Box, {
       justifyContent: 'space-between',
       height: `calc(100vh - ${headerHeight}px)`,
       transform: 'scale(1.05)',
-      transition: `all .2s ease ${TRANSITION_DURATION - 200}ms`,
+      transition: `all .2s ease ${
+        config.MobileMenu.transitionDuration - 200
+      }ms`,
       ...(open && {
         opacity: 1,
         transform: 'scale(1)'
@@ -107,7 +107,7 @@ const StlyedMobileMenu = styled(Box, {
 const MobileMenu = ({
   open = false,
   color = 'secondary',
-  headerHeight = DEFAULT_HEADER_HEIGHT,
+  headerHeight = config.ResponsiveHeader.defaultProps.heightSm,
   items = [],
   header,
   footer,
@@ -149,12 +149,16 @@ const MobileMenu = ({
   }
 
   useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+  }, [open])
+
+  useEffect(() => {
     if (!open && swiper) {
       setSecondLevel(null)
       setThirdLevel(null)
       setTimeout(() => {
         swiper.slideTo(0)
-      }, TRANSITION_DURATION)
+      }, config.MobileMenu.transitionDuration)
     }
   }, [open, swiper])
 

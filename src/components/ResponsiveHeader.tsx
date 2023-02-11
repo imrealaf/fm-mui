@@ -11,14 +11,12 @@ import {
 } from '@mui/material'
 import { Spiral as Hamburger } from 'hamburger-react'
 
+import config from '../config'
 import { hasChildItems, transformData } from '../utils'
 import MobileMenu from './MobileMenu'
 import { ThemeColorProp, MenuItemRecord } from '../types'
 import { useBreakpoint, useToggleByAnchor } from '../hooks'
 
-const TRANSITION_DURATION = 400
-const DEFAULT_HEIGHT = 64
-const DEFAULT_HEIGHT_SM = 56
 const BURGER_HEIGHT = 48
 
 export interface ResponsiveHeaderProps extends AppBarProps {
@@ -36,6 +34,7 @@ export interface ResponsiveHeaderProps extends AppBarProps {
   menuFooter?: React.ReactNode
   menuIconSize?: number
   onToggle(): void
+  scrollOffset?: number
 }
 
 const StyledResponsiveHeader = styled(AppBar, {
@@ -48,8 +47,8 @@ const StyledResponsiveHeader = styled(AppBar, {
   ({
     theme,
     open,
-    height = DEFAULT_HEIGHT,
-    heightSm = DEFAULT_HEIGHT_SM,
+    height = config.ResponsiveHeader.defaultProps.height,
+    heightSm = config.ResponsiveHeader.defaultProps.heightSm,
     brandPosition = 'center',
     hideActionsOnToggle,
     showActions
@@ -164,11 +163,12 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
 }
 
 const ResponsiveHeader = ({
-  height = DEFAULT_HEIGHT,
-  heightSm = DEFAULT_HEIGHT_SM,
+  position = config.ResponsiveHeader.defaultProps.position,
+  height = config.ResponsiveHeader.defaultProps.height,
+  heightSm = config.ResponsiveHeader.defaultProps.heightSm,
   brand = 'App',
   brandPosition,
-  color = 'primary',
+  color = config.ResponsiveHeader.defaultProps.color,
   actions,
   hideOnScroll = false,
   hideActionsOnToggle = false,
@@ -205,7 +205,7 @@ const ResponsiveHeader = ({
   useEffect(() => {
     setTimeout(() => {
       setShowActions(open && hideActionsOnToggle ? false : true)
-    }, TRANSITION_DURATION)
+    }, config.MobileMenu.transitionDuration)
   }, [open])
 
   useEffect(() => {
@@ -250,6 +250,7 @@ const ResponsiveHeader = ({
 
   return (
     <StyledResponsiveHeader
+      position={position}
       height={height}
       heightSm={heightSm}
       brandPosition={brandPosition}

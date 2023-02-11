@@ -1,28 +1,30 @@
-import React, { useState } from 'react'
-import { Box, IconButton, Menu, MenuItem } from '@mui/material'
+import React from 'react'
+import { IconButton, Menu, MenuItem } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import SearchIcon from '@mui/icons-material/Search'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import {
+  ResponsiveHeader,
+  useToggle,
+  useToggleByAnchor,
+  SearchDialog
+} from 'fm-mui'
 
-import menuItems from './data/menuItems'
-import ResponsiveHeader from '../components/ResponsiveHeader'
-import { useToggle, useToggleByAnchor } from '../hooks'
+import { useSearch } from '../hooks'
 
-export default {
-  title: 'Components/ResponsiveHeader',
-  component: ResponsiveHeader,
-  parameters: {
-    layout: 'fullscreen'
+const menuItems = [
+  {
+    title: 'About'
   }
-} as ComponentMeta<typeof ResponsiveHeader>
+]
 
-const Template: ComponentStory<typeof ResponsiveHeader> = (args) => {
-  const menu = useToggle()
+const Header = () => {
+  const { searchValue, clearSearch, submitSearch, onSearchChange } = useSearch()
+  const mobileMenu = useToggle()
+  const searchDialog = useToggle()
   const userMenu = useToggleByAnchor()
-  const [value, setValue] = useState('')
   const actions = (
     <>
-      <IconButton size='large' color='inherit'>
+      <IconButton size='large' color='inherit' onClick={searchDialog.show}>
         <SearchIcon />
       </IconButton>
       <IconButton size='large' onClick={userMenu.show} color='inherit'>
@@ -52,20 +54,30 @@ const Template: ComponentStory<typeof ResponsiveHeader> = (args) => {
       </Menu>
     </>
   )
+
+  const handleSearchClose = () => {
+    searchDialog.hide()
+    clearSearch()
+  }
+
   return (
-    <Box sx={{ height: 2000 }}>
+    <>
+      <SearchDialog
+        open={searchDialog.open}
+        value={searchValue}
+        onClose={handleSearchClose}
+        onChange={onSearchChange}
+        onClear={clearSearch}
+        onSubmit={submitSearch}
+      />
       <ResponsiveHeader
-        {...args}
-        open={menu.open}
-        onToggle={menu.toggle}
+        open={mobileMenu.open}
+        menuItems={menuItems}
+        onToggle={mobileMenu.toggle}
         actions={actions}
       />
-    </Box>
+    </>
   )
 }
 
-export const Default = Template.bind({})
-Default.args = {
-  menuItems,
-  menuFooter: <Box>This is a footer</Box>
-}
+export default Header

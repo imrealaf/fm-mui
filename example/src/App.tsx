@@ -1,9 +1,15 @@
 import React from 'react'
 
-import { ResponsiveHeader } from 'fm-mui'
+import Header from './components/Header'
+import Main from './components/Main'
 
 const App = () => {
-  return <p>app</p>
+  return (
+    <>
+      <Header />
+      <Main>content</Main>
+    </>
+  )
 }
 
 export default App

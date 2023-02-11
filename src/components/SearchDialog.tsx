@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import { handleTextChange } from '../utils'
+import { handleTextChange, handleEnterKey } from '../utils'
 import { useBreakpoint } from '../hooks'
 
 export interface SearchDialogProps {
@@ -66,6 +66,12 @@ const SearchDialog = ({
     }
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (value.length > 0 && onSubmit) {
+      handleEnterKey(event, onSubmit)
+    }
+  }
+
   return (
     <StyledSearchDialog
       open={open}
@@ -80,6 +86,7 @@ const SearchDialog = ({
         placeholder='Search..'
         {...InputProps}
         value={value}
+        onKeyDown={handleKeyDown}
         onChange={handleOnChange}
         disableUnderline={true}
         endAdornment={

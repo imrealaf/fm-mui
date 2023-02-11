@@ -12,3 +12,11 @@ export interface MenuItemRecord {
   childItems?: MenuItemRecord[]
   parent?: number
 }
+
+export type AppBarPosition =
+  | 'fixed'
+  | 'absolute'
+  | 'sticky'
+  | 'static'
+  | 'relative'
+  | undefined
