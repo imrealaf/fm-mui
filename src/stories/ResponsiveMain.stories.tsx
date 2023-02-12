@@ -17,7 +17,7 @@ import ResponsiveMain from '../components/ResponsiveMain'
 import { useToggle, useToggleByAnchor } from '../hooks'
 
 export default {
-  title: 'Components/ResponsiveMain',
+  title: 'Components/Custom/ResponsiveMain',
   component: ResponsiveMain,
   parameters: {
     layout: 'fullscreen'

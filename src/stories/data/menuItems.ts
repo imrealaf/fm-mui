@@ -12,6 +12,7 @@ const menuItems: MenuItemRecord[] = [
       },
       {
         title: 'Sub item 2',
+        active: true,
         childItems: [
           {
             title: 'Third item 1'

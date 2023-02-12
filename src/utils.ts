@@ -85,13 +85,40 @@ export const handleEnterKey = (
 export const hasChildItems = (item: MenuItemRecord) =>
   item.childItems && item.childItems.length > 0
 
-export const transformData = (items: MenuItemRecord[] = []) => {
-  items.forEach((item, index) => {
+export const transformData = (items: MenuItemRecord[] = [], inc = 0) => {
+  items.forEach((item) => {
+    item.level = 0
     if (hasChildItems(item)) {
       item.childItems?.forEach((childItem) => {
-        childItem.parent = index
-        if (hasChildItems(childItem)) transformData(childItem.childItems)
+        childItem.level = 1
+        childItem.parent = item
+        if (hasChildItems(childItem)) {
+          childItem.childItems?.forEach((subChildItem) => {
+            subChildItem.level = 2
+            subChildItem.parent = childItem
+          })
+        }
       })
     }
   })
+}
+
+export const getActiveItem = (
+  items: MenuItemRecord[] = []
+): MenuItemRecord | null => {
+  const actives: MenuItemRecord[] = []
+  items.forEach((item) => {
+    if (item.active) actives.push(item)
+    if (hasChildItems(item)) {
+      item.childItems?.forEach((childItem) => {
+        if (childItem.active) actives.push(childItem)
+        if (hasChildItems(childItem)) {
+          childItem.childItems?.forEach((subChild) => {
+            if (subChild.active) actives.push(subChild)
+          })
+        }
+      })
+    }
+  })
+  return actives.length ? actives[0] : null
 }

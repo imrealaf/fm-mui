@@ -10,7 +10,8 @@ export interface MenuItemRecord {
   url?: string
   active?: boolean
   childItems?: MenuItemRecord[]
-  parent?: number
+  parent?: MenuItemRecord
+  level?: number
 }
 
 export type AppBarPosition =

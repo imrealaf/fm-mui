@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material'
 import { useToggle } from '../hooks'
 
 export default {
-  title: 'Components/SearchDialog',
+  title: 'Components/Custom/SearchDialog',
   component: SearchDialog,
   parameters: {}
 } as ComponentMeta<typeof SearchDialog>
