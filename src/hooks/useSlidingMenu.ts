@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Swiper from 'swiper'
-import find from 'lodash/find'
 
 import { hasChildItems, transformData, getActiveItem } from '../utils'
 import { MenuItemRecord } from '../types'
 
 function useSlidingMenu(items: MenuItemRecord[] = []) {
-  // Transform the data
   transformData(items)
 
   const activeItem = getActiveItem(items)
-  const activeIndex = activeItem ? activeItem.level : 0
-  const getGetActiveSection = (index: number): MenuItemRecord | null => {
-    if (activeItem && activeItem.level === index) {
-      return activeItem.parent as MenuItemRecord
+  const activeIndex =
+    activeItem !== null && activeItem.level ? activeItem.level : 0
+  const getGetActiveSection = (index: number = 1): MenuItemRecord | null => {
+    if (activeItem && activeIndex > 0) {
+      if (index === 2) {
+        return activeItem.parent as MenuItemRecord
+      } else {
+        return activeItem.grandparent as MenuItemRecord
+      }
     } else {
       return null
     }

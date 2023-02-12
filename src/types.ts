@@ -11,6 +11,7 @@ export interface MenuItemRecord {
   active?: boolean
   childItems?: MenuItemRecord[]
   parent?: MenuItemRecord
+  grandparent?: MenuItemRecord
   level?: number
 }
 

@@ -96,6 +96,7 @@ export const transformData = (items: MenuItemRecord[] = [], inc = 0) => {
           childItem.childItems?.forEach((subChildItem) => {
             subChildItem.level = 2
             subChildItem.parent = childItem
+            subChildItem.grandparent = childItem.parent
           })
         }
       })
@@ -120,5 +121,5 @@ export const getActiveItem = (
       })
     }
   })
-  return actives.length ? actives[0] : null
+  return actives.length ? actives[actives.length - 1] : null
 }

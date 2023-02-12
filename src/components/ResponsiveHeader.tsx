@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import {
-  AppBar,
-  AppBarProps,
-  styled,
-  Toolbar,
-  Box,
-  Link,
-  Menu,
-  MenuItem
-} from '@mui/material'
+import { AppBar, AppBarProps, styled, Toolbar, Box } from '@mui/material'
 import { Spiral as Hamburger } from 'hamburger-react'
 
 import config from '../config'
-import { hasChildItems, transformData } from '../utils'
+import { transformData } from '../utils'
 import MobileMenu from './MobileMenu'
+import DesktopMenu from './DesktopMenu'
 import { ThemeColorProp, MenuItemRecord } from '../types'
-import { useBreakpoint, useToggleByAnchor } from '../hooks'
+import { useBreakpoint } from '../hooks'
 
 const BURGER_HEIGHT = 48
 
@@ -125,43 +117,6 @@ const StyledResponsiveHeader = styled(AppBar, {
   })
 )
 
-interface DesktopMenuProps {
-  items: MenuItemRecord[]
-}
-
-const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
-  return (
-    <Box className='ResponsiveHeader-menu'>
-      {items.map((item) => {
-        const dd = useToggleByAnchor()
-        const linkProps = hasChildItems(item)
-          ? {
-              onClick: dd.show
-            }
-          : {}
-        return (
-          <>
-            <Link
-              className='ResponsiveHeaderMenu-link'
-              color='inherit'
-              {...linkProps}
-            >
-              {item.title}
-            </Link>
-            {hasChildItems(item) && (
-              <Menu open={dd.open} anchorEl={dd.anchorEl} onClose={dd.hide}>
-                {item.childItems?.map((childItem) => (
-                  <MenuItem>{childItem.title}</MenuItem>
-                ))}
-              </Menu>
-            )}
-          </>
-        )
-      })}
-    </Box>
-  )
-}
-
 const ResponsiveHeader = ({
   position = config.ResponsiveHeader.defaultProps.position,
   height = config.ResponsiveHeader.defaultProps.height,
@@ -187,10 +142,6 @@ const ResponsiveHeader = ({
   const [showActions, setShowActions] = useState(true)
   const scrollValue = bp.smAndDown ? heightSm : height
   const hasMenuItems = menuItems && menuItems.length > 0
-
-  if (hasMenuItems) {
-    transformData(menuItems)
-  }
 
   const onScroll = () => {
     setPageY(window.pageYOffset)
