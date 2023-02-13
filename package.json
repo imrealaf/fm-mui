@@ -51,6 +51,7 @@
     "@types/node": "^12.12.38",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.10",
+    "@types/validator": "^13.7.12",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "babel-eslint": "^10.0.3",
@@ -80,7 +81,8 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "validator": "^13.9.0"
   },
   "files": [
     "dist"
