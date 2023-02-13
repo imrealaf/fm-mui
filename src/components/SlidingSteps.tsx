@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import {
   Box,
   Button,
@@ -10,11 +10,17 @@ import {
   ButtonProps,
   LinearProgress,
   alpha,
-  useTheme,
   Card,
-  Fade,
   CardProps,
-  BoxProps
+  BoxProps,
+  StepperProps,
+  LinearProgressProps,
+  CircularProgressProps,
+  StepProps,
+  StepLabelProps,
+  TypographyProps,
+  Backdrop,
+  CircularProgress
 } from '@mui/material'
 import { Swiper as ReactSwiper, SwiperProps } from 'swiper/react'
 import { EffectFade } from 'swiper'
@@ -30,6 +36,10 @@ export interface SlidingStepsRecord {
 
 export interface SlidingStepsProps extends SwiperProps {
   steps?: SlidingStepsRecord[]
+  pending?: boolean
+  completed?: boolean
+  completedContent?: React.ReactNode
+  completedActions?: React.ReactNode
   showProgress?: boolean
   showCounter?: boolean
   progressVariant?: 'stepper' | 'bar'
@@ -42,16 +52,24 @@ export interface SlidingStepsProps extends SwiperProps {
   prevBtnText?: string
   finalBtnText?: string
   nextBtnDisabled?: boolean
-  containerComponent?: typeof Card | typeof Box
-  containerProps?: CardProps | BoxProps
-  onNext(skip?: boolean): void
+  ContainerComponent?: typeof Card | typeof Box
+  ContainerProps?: CardProps | BoxProps
+  StepperProps?: StepperProps
+  StepProps?: StepProps
+  StepLabelProps?: StepLabelProps
+  LinearProgressProps?: LinearProgressProps
+  CounterTextProps?: TypographyProps
+  CircularProgressProps?: CircularProgressProps
+  alignActions?: 'flex-start' | 'flex-end' | 'center'
+  backdropOpacity?: number
+  onNext(skip: boolean): void
   onPrev(): void
   onComplete?(): void
   children: React.ReactNode
 }
 
 const StyledSlidingSteps = styled(Box)<Partial<SlidingStepsProps>>(
-  ({ theme }) => ({
+  ({ theme, backdropOpacity = 0.5 }) => ({
     '.SlidingStepsCounter-dots': {
       span: {
         display: 'inline-block',
@@ -67,41 +85,29 @@ const StyledSlidingSteps = styled(Box)<Partial<SlidingStepsProps>>(
       }
     },
 
-    '.SlidingMenu-content': {
-      position: 'relative',
+    '.MuiBackdrop-root': {
+      position: 'absolute',
+      background: alpha(theme.palette.background.paper, backdropOpacity),
+      zIndex: 20
+    },
 
-      '.SlidingMenu-fade': {
-        height: '100%',
-        position: 'absolute',
-        top: 0,
-        zIndex: 10
-      },
-
-      '.SlidingMenuFade-left': {
-        left: 0,
-        backgroundImage: `linear-gradient(to left, ${alpha(
-          theme.palette.background.paper,
-          0
-        )}, ${alpha(theme.palette.background.paper, 1)})`
-      },
-
-      '.SlidingMenuFade-right': {
-        right: 0,
-        backgroundImage: `linear-gradient(to right, ${alpha(
-          theme.palette.background.paper,
-          0
-        )}, ${alpha(theme.palette.background.paper, 1)})`
-      }
+    '.SlidingSteps-content': {
+      position: 'relative'
     }
   })
 )
 
 const SlidingSteps = ({
   steps = [],
+  pending = false,
+  completed = false,
+  completedContent,
+  completedActions,
   speed,
   effect = 'slide',
   initialSlide = 0,
   activeIndex = 0,
+  alignActions = 'center',
   nextBtnProps,
   prevBtnProps,
   skipBtnProps,
@@ -113,8 +119,15 @@ const SlidingSteps = ({
   showCounter = true,
   progressVariant = 'stepper',
   counterVariant = 'text',
-  containerComponent = Box,
-  containerProps,
+  backdropOpacity,
+  ContainerComponent = Box,
+  ContainerProps,
+  StepperProps,
+  StepProps,
+  StepLabelProps,
+  LinearProgressProps,
+  CounterTextProps,
+  CircularProgressProps,
   onInit,
   onActiveIndexChange,
   onNext,
@@ -127,10 +140,7 @@ const SlidingSteps = ({
   const stepNames = steps.map((step) => step.title)
   const activeStep = steps[activeIndex]
   const bp = useBreakpoint()
-  const theme = useTheme()
   const progress = Math.round((activeIndex / numSteps) * 100)
-  const [fadeEdges, setFadeEdges] = useState(false)
-  const fadeWidth = theme.spacing(2)
   const speeds = {
     slide: 500,
     fade: 300
@@ -145,30 +155,31 @@ const SlidingSteps = ({
   }
 
   const getCounter = (variant: 'text' | 'dots') => {
-    if (variant === 'dots') {
-      return (
-        <Box className='SlidingStepsCounter-dots'>
-          {steps.map((step, i) => (
-            <span
-              key={step.title}
-              className={clsx({
-                active: i <= activeIndex
-              })}
-            ></span>
-          ))}
-        </Box>
-      )
-    } else {
-      return (
-        <Typography
-          className='SlidingStepsCounter-text'
-          mb={0}
-          textAlign='center'
-        >
-          {activeIndex + 1}/{numSteps}
-        </Typography>
-      )
-    }
+    return (
+      <Box className='SlidingSteps-counter' textAlign='center' mb={1}>
+        {variant === 'dots' ? (
+          <Box className='SlidingStepsCounter-dots'>
+            {steps.map((step, i) => (
+              <span
+                key={step.title}
+                className={clsx({
+                  active: i <= activeIndex
+                })}
+              ></span>
+            ))}
+          </Box>
+        ) : (
+          <Typography
+            {...CounterTextProps}
+            className='SlidingStepsCounter-text'
+            mb={0}
+            textAlign='center'
+          >
+            {activeIndex + 1}/{numSteps}
+          </Typography>
+        )}
+      </Box>
+    )
   }
 
   const getProgressBar = () => {
@@ -179,30 +190,32 @@ const SlidingSteps = ({
         mb={showCounter ? 1 : 3}
         px={4}
       >
-        <LinearProgress variant='determinate' value={progress} />
+        <LinearProgress
+          {...LinearProgressProps}
+          variant='determinate'
+          value={progress}
+        />
       </Box>
     )
   }
 
   return (
-    <StyledSlidingSteps className='SlidingSteps-root'>
+    <StyledSlidingSteps
+      className='SlidingSteps-root'
+      backdropOpacity={backdropOpacity}
+    >
       {/* Progress - desktop */}
       {/* Stepper */}
       {showProgress && progressVariant === 'stepper' && bp.smAndUp && (
         <Stepper
+          {...StepperProps}
           className='SlidingStepsProgress-stepper'
           activeStep={activeIndex}
           sx={{ mb: 2 }}
         >
           {stepNames.map((step, i) => (
-            <Step completed={steps[i].completed}>
-              <StepLabel
-                optional={
-                  steps[i].optional ? (
-                    <Typography variant='caption'>Optional</Typography>
-                  ) : null
-                }
-              >
+            <Step {...StepProps} completed={steps[i].completed}>
+              <StepLabel {...StepLabelProps} optional={steps[i].optional}>
                 {step}
               </StepLabel>
             </Step>
@@ -211,11 +224,10 @@ const SlidingSteps = ({
       )}
 
       {showProgress && progressVariant === 'bar' && getProgressBar()}
-      {showProgress && showCounter && progressVariant === 'bar' && (
-        <Box className='SlidingSteps-counter' textAlign='center' mb={1}>
-          {getCounter(counterVariant)}
-        </Box>
-      )}
+      {showProgress &&
+        showCounter &&
+        progressVariant === 'bar' &&
+        getCounter(counterVariant)}
 
       {/* Progress - mobile */}
       {showProgress &&
@@ -225,27 +237,17 @@ const SlidingSteps = ({
       {showProgress &&
         progressVariant === 'stepper' &&
         showCounter &&
-        bp.xs && (
-          <Box className='SlidingSteps-counter' textAlign='center' mb={1}>
-            {getCounter(counterVariant)}
-          </Box>
-        )}
+        bp.xs &&
+        getCounter(counterVariant)}
 
       <Box
-        {...containerProps}
-        component={containerComponent}
-        className='SlidingMenu-content'
+        {...ContainerProps}
+        component={ContainerComponent}
+        className='SlidingSteps-content'
       >
-        {effect !== 'fade' && (
-          <Fade in={fadeEdges}>
-            <Box
-              className='SlidingMenu-fade SlidingMenuFade-left'
-              sx={{
-                width: fadeWidth
-              }}
-            />
-          </Fade>
-        )}
+        <Backdrop open={pending}>
+          <CircularProgress {...CircularProgressProps} />
+        </Backdrop>
         <ReactSwiper
           modules={[EffectFade]}
           speed={speed || speeds[effect]}
@@ -259,51 +261,43 @@ const SlidingSteps = ({
           allowTouchMove={false}
           onSwiper={onInit}
           onActiveIndexChange={onActiveIndexChange}
-          onSlideChangeTransitionStart={() => setFadeEdges(true)}
-          onSlideChangeTransitionEnd={() => setFadeEdges(false)}
         >
-          {children}
+          {completed && completedContent ? completedContent : children}
         </ReactSwiper>
-        {effect !== 'fade' && (
-          <Fade in={fadeEdges}>
-            <Box
-              className='SlidingMenu-fade SlidingMenuFade-right'
-              sx={{
-                width: fadeWidth
-              }}
-            />
-          </Fade>
-        )}
       </Box>
-      <Box
-        className='SlidingStepsActions-root'
-        mt={2}
-        display='flex'
-        justifyContent='center'
-      >
-        {/* Previous button */}
-        {activeIndex > 0 && (
-          <Button {...prevBtnProps} onClick={onPrev}>
-            {prevBtnText}
-          </Button>
-        )}
-
-        {/* Skip button */}
-        {activeStep.optional && (
-          <Button {...skipBtnProps} onClick={() => handleNextClick(true)}>
-            Skip
-          </Button>
-        )}
-
-        {/* Next button */}
-        <Button
-          {...nextBtnProps}
-          disabled={nextBtnDisabled}
-          onClick={() => handleNextClick()}
+      {!completed ? (
+        <Box
+          className='SlidingStepsActions-root'
+          mt={2}
+          display='flex'
+          justifyContent={alignActions}
         >
-          {isLastStep ? finalBtnText : nextBtnText}
-        </Button>
-      </Box>
+          {/* Previous button */}
+          {activeIndex > 0 && (
+            <Button {...prevBtnProps} onClick={onPrev}>
+              {prevBtnText}
+            </Button>
+          )}
+
+          {/* Skip button */}
+          {activeStep.optional && (
+            <Button {...skipBtnProps} onClick={() => handleNextClick(true)}>
+              Skip
+            </Button>
+          )}
+
+          {/* Next button */}
+          <Button
+            {...nextBtnProps}
+            disabled={nextBtnDisabled}
+            onClick={() => handleNextClick()}
+          >
+            {isLastStep ? finalBtnText : nextBtnText}
+          </Button>
+        </Box>
+      ) : completedActions ? (
+        completedActions
+      ) : null}
     </StyledSlidingSteps>
   )
 }

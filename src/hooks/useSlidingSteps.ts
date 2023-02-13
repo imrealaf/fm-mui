@@ -8,13 +8,14 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
   const [steps, setSteps] = useState<SlidingStepsRecord[]>(data)
   const [activeIndex, setActiveIndex] = useState<number>(initialSlide)
   const [currentStepIsValid, setCurrentStepIsValid] = useState(false)
+  const [completed, setCompleted] = useState(false)
+  const [pending, setPending] = useState(false)
 
   const onInit = (swiperInstance: Swiper) => {
     setSwiper(swiperInstance)
   }
 
   const onActiveIndexChange = (swiperInstance: Swiper) => {
-    console.log(swiperInstance.activeIndex)
     setActiveIndex(swiperInstance.activeIndex)
   }
 
@@ -22,7 +23,7 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
     if (step) swiper?.slideTo(step)
   }
 
-  const onNext = (skip?: boolean) => {
+  const goToNext = (skip?: boolean) => {
     const activeStep = steps[activeIndex]
     if (!skip) {
       activeStep.completed = true
@@ -31,19 +32,37 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
     swiper?.slideNext()
   }
 
-  const onPrev = () => {
+  const completeSteps = (callback?: () => void) => {
+    const lastStep = steps[steps.length - 1]
+    lastStep.completed = true
+    setSteps([...steps])
+    setCompleted(true)
+    if (callback) callback()
+  }
+
+  const goToPrev = () => {
     swiper?.slidePrev()
   }
 
   const validateStep = (num: number, isValid: boolean) => {
     const step = steps[num - 1]
-    step.valid = isValid
-    setSteps([...steps])
+    if (step) {
+      step.completed = false
+      step.valid = isValid
+      setSteps([...steps])
+    }
+  }
+
+  const isStep = (num: number) => {
+    return num ? num === activeIndex + 1 : false
+  }
+
+  const getActiveStep = () => {
+    return steps[activeIndex]
   }
 
   useEffect(() => {
     const activeStep = steps[activeIndex]
-    if (!activeStep.valid) activeStep.completed = false
     const isValid = activeStep.valid || activeStep.completed ? true : false
     setCurrentStepIsValid(isValid)
   }, [steps, activeIndex])
@@ -52,15 +71,24 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
     initialSlide,
     swiper,
     steps,
+    pending,
+    setPending,
+    completed,
     currentStepIsValid,
     activeIndex,
     numSteps: steps.length,
     validateStep,
     onInit,
     onActiveIndexChange,
-    onNext,
-    onPrev,
-    goToStep
+    goToNext,
+    goToPrev,
+    goToStep,
+    completeSteps,
+    isStep,
+    getActiveStep,
+    isActiveStepOptional: () => getActiveStep().optional,
+    isActiveStepCompleted: () => getActiveStep().completed,
+    isActiveStepValid: () => getActiveStep().valid
   }
 }
 

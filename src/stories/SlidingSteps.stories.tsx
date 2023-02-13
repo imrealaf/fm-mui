@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Box, Grid, Container, TextField, Card } from '@mui/material'
+import {
+  Box,
+  Grid,
+  Container,
+  TextField,
+  Button,
+  Typography
+} from '@mui/material'
 import { SwiperSlide } from 'swiper/react'
 import validator from 'validator'
 
@@ -18,35 +25,44 @@ export default {
 
 const stepsData = [
   {
-    title: 'Step 1'
+    title: 'Step 1',
+    valid: true
   },
   {
     title: 'Step 2',
     optional: true
   },
   {
-    title: 'Step 3'
+    title: 'Step 3',
+    valid: true
   }
 ]
 
 const Template: ComponentStory<typeof SlidingSteps> = (args) => {
   const {
-    swiper,
+    isStep,
     steps,
+    pending,
+    setPending,
+    completed,
     onInit,
     onActiveIndexChange,
-    onNext,
-    onPrev,
+    goToNext,
+    goToPrev,
+    completeSteps,
     activeIndex,
     initialSlide,
     currentStepIsValid,
-    validateStep
+    validateStep,
+    isActiveStepOptional
   } = useSlidingSteps(stepsData)
 
   const [data, setData] = useState({
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    password: '',
+    passwordConfirm: ''
   })
 
   const onChange = ({ name, value }) => {
@@ -56,11 +72,39 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
     })
   }
 
+  const handleNext = () => {
+    if (isStep(1)) {
+      setPending(true)
+      setTimeout(() => {
+        setPending(false)
+        goToNext()
+      }, 2000)
+    } else {
+      goToNext(isActiveStepOptional())
+    }
+  }
+
+  const handleComplete = () => {
+    setPending(true)
+    setTimeout(() => {
+      setPending(false)
+      completeSteps()
+    }, 2000)
+  }
+
   const Step1 = (
-    <Box p={3}>
+    <Box
+      sx={{
+        pt: {
+          xs: 1,
+          sm: 2
+        }
+      }}
+    >
       <Grid container spacing={2} mb={2}>
         <Grid item xs={12} md={6}>
           <TextField
+            required
             name='firstName'
             label='First Name'
             fullWidth
@@ -81,6 +125,8 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
+            required
+            type='email'
             name='email'
             label='Email'
             fullWidth
@@ -92,43 +138,97 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
     </Box>
   )
 
-  useEffect(() => {
-    if (activeIndex === 0)
-      validateStep(
-        1,
-        data.firstName.length > 0 &&
-          data.lastName.length > 0 &&
-          validator.isEmail(data.email)
-      )
-  }, [data, activeIndex])
-
   const Step2 = <Box>setp 2</Box>
 
-  const stepsContent = [Step1, Step2]
+  const Step3 = (
+    <Box
+      sx={{
+        pt: {
+          xs: 1,
+          sm: 2
+        }
+      }}
+    >
+      <Grid container>
+        <Grid item xs={12} mb={2}>
+          <TextField
+            required
+            name='password'
+            label='Password'
+            fullWidth
+            value={data.password}
+            onChange={(e) => handleTextChange(e, onChange)}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            name='passwordConfirm'
+            label='Confirm Password'
+            fullWidth
+            value={data.passwordConfirm}
+            onChange={(e) => handleTextChange(e, onChange)}
+          />
+        </Grid>
+      </Grid>
+    </Box>
+  )
+
+  const stepsContent = [Step1, Step2, Step3]
+
+  const completedContent = (
+    <Box textAlign='center' p={4}>
+      Thanks for signing up
+    </Box>
+  )
+
+  const completedActions = (
+    <>
+      <Button>Go Somewhere</Button>
+    </>
+  )
+
+  // useEffect(() => {
+  //   if (isStep(1))
+  //     validateStep(
+  //       1,
+  //       data.firstName.length > 0 && validator.isEmail(data.email)
+  //     )
+  //   if (isStep(3))
+  //     validateStep(
+  //       3,
+  //       data.password.length > 0 && data.passwordConfirm.length > 0
+  //     )
+  // }, [data, activeIndex])
 
   return (
     <Box>
       <Container maxWidth='sm'>
+        <Typography variant='h4' textAlign='center' mb={2}>
+          Sign Up
+        </Typography>
         <SlidingSteps
           {...args}
+          completed={completed}
+          pending={pending}
           steps={steps}
           activeIndex={activeIndex}
           onInit={onInit}
           onActiveIndexChange={onActiveIndexChange}
-          onPrev={onPrev}
-          onNext={onNext}
+          onPrev={goToPrev}
+          onNext={handleNext}
           initialSlide={initialSlide}
           nextBtnDisabled={!currentStepIsValid}
-          onComplete={() => {
-            alert('steps complete')
-          }}
-          containerComponent={Card}
-          containerProps={{
-            variant: 'outlined'
-          }}
+          onComplete={handleComplete}
+          completedContent={completedContent}
+          completedActions={completedActions}
+          // ContainerComponent={Card}
+          // ContainerProps={{
+          //   variant: 'outlined'
+          // }}
         >
           {steps.map((step, i) => (
-            <SwiperSlide key={step.name}>{stepsContent[i]}</SwiperSlide>
+            <SwiperSlide key={step.title}>{stepsContent[i]}</SwiperSlide>
           ))}
         </SlidingSteps>
       </Container>
