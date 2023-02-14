@@ -37,6 +37,7 @@ export interface SlidingStepsRecord {
 export interface SlidingStepsProps extends SwiperProps {
   steps?: SlidingStepsRecord[]
   pending?: boolean
+  progress?: number
   completed?: boolean
   completedContent?: React.ReactNode
   completedActions?: React.ReactNode
@@ -100,6 +101,7 @@ const StyledSlidingSteps = styled(Box)<Partial<SlidingStepsProps>>(
 const SlidingSteps = ({
   steps = [],
   pending = false,
+  progress = 0,
   completed = false,
   completedContent,
   completedActions,
@@ -140,7 +142,6 @@ const SlidingSteps = ({
   const stepNames = steps.map((step) => step.title)
   const activeStep = steps[activeIndex]
   const bp = useBreakpoint()
-  const progress = Math.round((activeIndex / numSteps) * 100)
   const speeds = {
     slide: 500,
     fade: 300

@@ -25,16 +25,16 @@ export default {
 
 const stepsData = [
   {
-    title: 'Step 1',
-    valid: true
+    title: 'Step 1'
+    // valid: true
   },
   {
     title: 'Step 2',
     optional: true
   },
   {
-    title: 'Step 3',
-    valid: true
+    title: 'Step 3'
+    // valid: true
   }
 ]
 
@@ -42,6 +42,7 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
   const {
     isStep,
     steps,
+    progress,
     pending,
     setPending,
     completed,
@@ -52,8 +53,8 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
     completeSteps,
     activeIndex,
     initialSlide,
-    currentStepIsValid,
     validateStep,
+    isActiveStepValid,
     isActiveStepOptional
   } = useSlidingSteps(stepsData)
 
@@ -188,18 +189,18 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
     </>
   )
 
-  // useEffect(() => {
-  //   if (isStep(1))
-  //     validateStep(
-  //       1,
-  //       data.firstName.length > 0 && validator.isEmail(data.email)
-  //     )
-  //   if (isStep(3))
-  //     validateStep(
-  //       3,
-  //       data.password.length > 0 && data.passwordConfirm.length > 0
-  //     )
-  // }, [data, activeIndex])
+  useEffect(() => {
+    if (isStep(1))
+      validateStep(
+        1,
+        data.firstName.length > 0 && validator.isEmail(data.email)
+      )
+    if (isStep(3))
+      validateStep(
+        3,
+        data.password.length > 0 && data.passwordConfirm.length > 0
+      )
+  }, [data, activeIndex])
 
   return (
     <Box>
@@ -209,8 +210,10 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
         </Typography>
         <SlidingSteps
           {...args}
+          progress={progress}
           completed={completed}
           pending={pending}
+          showProgress={!completed}
           steps={steps}
           activeIndex={activeIndex}
           onInit={onInit}
@@ -218,7 +221,7 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
           onPrev={goToPrev}
           onNext={handleNext}
           initialSlide={initialSlide}
-          nextBtnDisabled={!currentStepIsValid}
+          nextBtnDisabled={!isActiveStepValid()}
           onComplete={handleComplete}
           completedContent={completedContent}
           completedActions={completedActions}

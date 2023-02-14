@@ -7,9 +7,9 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
   const [swiper, setSwiper] = useState<Swiper | null>(null)
   const [steps, setSteps] = useState<SlidingStepsRecord[]>(data)
   const [activeIndex, setActiveIndex] = useState<number>(initialSlide)
-  const [currentStepIsValid, setCurrentStepIsValid] = useState(false)
   const [completed, setCompleted] = useState(false)
   const [pending, setPending] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   const onInit = (swiperInstance: Swiper) => {
     setSwiper(swiperInstance)
@@ -32,12 +32,12 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
     swiper?.slideNext()
   }
 
-  const completeSteps = (callback?: () => void) => {
+  const completeSteps = () => {
     const lastStep = steps[steps.length - 1]
     lastStep.completed = true
     setSteps([...steps])
+    setProgress(100)
     setCompleted(true)
-    if (callback) callback()
   }
 
   const goToPrev = () => {
@@ -62,19 +62,17 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
   }
 
   useEffect(() => {
-    const activeStep = steps[activeIndex]
-    const isValid = activeStep.valid || activeStep.completed ? true : false
-    setCurrentStepIsValid(isValid)
-  }, [steps, activeIndex])
+    setProgress(Math.round(((activeIndex + 0) / steps.length) * 100))
+  }, [activeIndex])
 
   return {
     initialSlide,
     swiper,
     steps,
+    progress,
     pending,
     setPending,
     completed,
-    currentStepIsValid,
     activeIndex,
     numSteps: steps.length,
     validateStep,
@@ -85,6 +83,7 @@ function useSlidingSteps(data: SlidingStepsRecord[] = [], initialSlide = 0) {
     goToStep,
     completeSteps,
     isStep,
+    activeStep: activeIndex + 1,
     getActiveStep,
     isActiveStepOptional: () => getActiveStep().optional,
     isActiveStepCompleted: () => getActiveStep().completed,
