@@ -78,26 +78,21 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
             }
           : {}
         return (
-          <>
-            <Link
-              color='inherit'
-              className={clsx('DesktopMenuLink-root', {
-                'DesktopMenuLink-toggle': hasChildItems(item),
-                'DesktopMenuLink-active': item.active
-              })}
-              {...linkProps}
-            >
-              {item.title}
-              {hasChildItems(item) && (
-                <Box display='inline-flex' className='DesktopMenuLink-icon'>
-                  {dd.open ? (
-                    <KeyboardArrowUpIcon />
-                  ) : (
-                    <KeyboardArrowDownIcon />
-                  )}
-                </Box>
-              )}
-            </Link>
+          <Link
+            key={item.title}
+            color='inherit'
+            className={clsx('DesktopMenuLink-root', {
+              'DesktopMenuLink-toggle': hasChildItems(item),
+              'DesktopMenuLink-active': item.active
+            })}
+            {...linkProps}
+          >
+            {item.title}
+            {hasChildItems(item) && (
+              <Box display='inline-flex' className='DesktopMenuLink-icon'>
+                {dd.open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </Box>
+            )}
             {hasChildItems(item) && (
               <StyledDropdown
                 open={dd.open}
@@ -120,31 +115,30 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
                       }
                     : {}
                   return (
-                    <>
-                      <Link
-                        {...childLinkProps}
-                        className={clsx('DesktopMenuDropdownLink-root', {
-                          'DesktopMenuDropdownLink-toggle':
-                            hasChildItems(childItem),
-                          'DesktopMenuDropdownLink-active': childItem.active
-                        })}
-                        color='inherit'
-                        sx={{ px: 1 }}
-                      >
-                        {childItem.title}
-                        {hasChildItems(childItem) && (
-                          <Box
-                            display='inline-flex'
-                            className='DesktopMenuDropdownLink-icon'
-                          >
-                            {level2dd.open ? (
-                              <KeyboardArrowUpIcon />
-                            ) : (
-                              <KeyboardArrowDownIcon />
-                            )}
-                          </Box>
-                        )}
-                      </Link>
+                    <Link
+                      key={childItem.title}
+                      {...childLinkProps}
+                      className={clsx('DesktopMenuDropdownLink-root', {
+                        'DesktopMenuDropdownLink-toggle':
+                          hasChildItems(childItem),
+                        'DesktopMenuDropdownLink-active': childItem.active
+                      })}
+                      color='inherit'
+                      sx={{ px: 1 }}
+                    >
+                      {childItem.title}
+                      {hasChildItems(childItem) && (
+                        <Box
+                          display='inline-flex'
+                          className='DesktopMenuDropdownLink-icon'
+                        >
+                          {level2dd.open ? (
+                            <KeyboardArrowUpIcon />
+                          ) : (
+                            <KeyboardArrowDownIcon />
+                          )}
+                        </Box>
+                      )}
                       {hasChildItems(childItem) && (
                         <Menu
                           open={level2dd.open}
@@ -152,16 +146,18 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
                           onClose={level2dd.hide}
                         >
                           {childItem.childItems?.map((subChildItem) => (
-                            <MenuItem>{subChildItem.title}</MenuItem>
+                            <MenuItem key={subChildItem.title}>
+                              {subChildItem.title}
+                            </MenuItem>
                           ))}
                         </Menu>
                       )}
-                    </>
+                    </Link>
                   )
                 })}
               </StyledDropdown>
             )}
-          </>
+          </Link>
         )
       })}
     </StyledDesktopMenu>

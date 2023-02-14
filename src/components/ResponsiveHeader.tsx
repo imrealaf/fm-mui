@@ -25,7 +25,7 @@ export interface ResponsiveHeaderProps extends AppBarProps {
   menuHeader?: React.ReactNode
   menuFooter?: React.ReactNode
   menuIconSize?: number
-  onToggle(): void
+  onToggle?(): void
   scrollOffset?: number
 }
 
@@ -148,7 +148,7 @@ const ResponsiveHeader = ({
   const [lastScrollPosition, setLastScrollPosition] = useState(0)
   const [show, setShow] = useState(true)
   const [showActions, setShowActions] = useState(true)
-  const scrollValue = bp.smAndDown ? heightSm : height
+  const scrollValue = bp[config.global.mobileBpQuery] ? heightSm : height
   const hasMenuItems = menuItems && menuItems.length > 0
 
   const onScroll = () => {
@@ -223,7 +223,7 @@ const ResponsiveHeader = ({
       }}
     >
       <Toolbar>
-        {bp.smAndDown && (
+        {hasMenuItems && bp[config.global.mobileBpQuery] && (
           <MobileMenu
             open={open}
             items={menuItems}
@@ -231,18 +231,19 @@ const ResponsiveHeader = ({
             color={menuColor}
             header={menuHeader}
             footer={menuFooter}
-            headerHeight={heightSm}
           />
         )}
         <Box className='ResponsiveHeader-content'>
-          {bp.smAndDown ? (
+          {bp[config.global.mobileBpQuery] ? (
             <>
-              <Hamburger
-                size={menuIconSize}
-                toggled={open}
-                toggle={onToggle}
-                hideOutline={true}
-              />
+              {hasMenuItems && (
+                <Hamburger
+                  size={menuIconSize}
+                  toggled={open}
+                  toggle={onToggle}
+                  hideOutline={true}
+                />
+              )}
               {brand && <Box className='ResponsiveHeader-brand'>{brand}</Box>}
               {actions && (
                 <Box className='ResponsiveHeader-actions'>{actions}</Box>

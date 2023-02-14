@@ -22,3 +22,20 @@ export type AppBarPosition =
   | 'static'
   | 'relative'
   | undefined
+
+export type DrawerPosition = 'left' | 'right'
+
+export type BreakpointQuery =
+  | 'xs'
+  | 'smAndDown'
+  | 'smAndUp'
+  | 'sm'
+  | 'mdAndDown'
+  | 'mdAndUp'
+  | 'md'
+  | 'lgAndDown'
+  | 'lgAndUp'
+  | 'lg'
+  | 'xlAndDown'
+  | 'xlAndUp'
+  | 'xl'

@@ -69,34 +69,34 @@ export interface SlidingStepsProps extends SwiperProps {
   children: React.ReactNode
 }
 
-const StyledSlidingSteps = styled(Box)<Partial<SlidingStepsProps>>(
-  ({ theme, backdropOpacity = 0.5 }) => ({
-    '.SlidingStepsCounter-dots': {
-      span: {
-        display: 'inline-block',
-        width: 8,
-        height: 8,
-        borderRadius: '50%',
-        background: theme.palette.grey[300],
-        margin: '0 3px',
+const StyledSlidingSteps = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'backdropOpacity'
+})<Partial<SlidingStepsProps>>(({ theme, backdropOpacity = 0.5 }) => ({
+  '.SlidingStepsCounter-dots': {
+    span: {
+      display: 'inline-block',
+      width: 8,
+      height: 8,
+      borderRadius: '50%',
+      background: theme.palette.grey[300],
+      margin: '0 3px',
 
-        '&.active': {
-          background: theme.palette.primary.main
-        }
+      '&.active': {
+        background: theme.palette.primary.main
       }
-    },
-
-    '.MuiBackdrop-root': {
-      position: 'absolute',
-      background: alpha(theme.palette.background.paper, backdropOpacity),
-      zIndex: 20
-    },
-
-    '.SlidingSteps-content': {
-      position: 'relative'
     }
-  })
-)
+  },
+
+  '.MuiBackdrop-root': {
+    position: 'absolute',
+    background: alpha(theme.palette.background.paper, backdropOpacity),
+    zIndex: 20
+  },
+
+  '.SlidingSteps-content': {
+    position: 'relative'
+  }
+}))
 
 const SlidingSteps = ({
   steps = [],
@@ -215,8 +215,11 @@ const SlidingSteps = ({
           sx={{ mb: 2 }}
         >
           {stepNames.map((step, i) => (
-            <Step {...StepProps} completed={steps[i].completed}>
-              <StepLabel {...StepLabelProps} optional={steps[i].optional}>
+            <Step key={step} {...StepProps} completed={steps[i].completed}>
+              <StepLabel
+                {...StepLabelProps}
+                optional={steps[i].optional ? <></> : null}
+              >
                 {step}
               </StepLabel>
             </Step>

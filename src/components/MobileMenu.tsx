@@ -5,12 +5,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useSwipeable } from 'react-swipeable'
 
-import config from '../config'
+import config, { getProps } from '../config'
 import { hasChildItems, transformData } from '../utils'
 import { MenuItemRecord, ThemeColorProp } from '../types'
 
 export interface MobileMenuProps {
-  headerHeight?: number
   open?: boolean
   color?: ThemeColorProp
   items?: MenuItemRecord[]
@@ -53,7 +52,7 @@ const MobileMenuSection = ({
 
 const StlyedMobileMenu = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'headerHeight'
-})<Partial<MobileMenuProps>>(
+})<Partial<MobileMenuProps> & { headerHeight: number }>(
   ({
     theme,
     open,
@@ -107,12 +106,12 @@ const StlyedMobileMenu = styled(Box, {
 const MobileMenu = ({
   open = false,
   color = 'secondary',
-  headerHeight = config.ResponsiveHeader.defaultProps.heightSm,
   items = [],
   header,
   footer,
   onToggle
 }: MobileMenuProps) => {
+  const headerProps = getProps('ResponsiveHeader')
   const [swiper, setSwiper] = useState<typeof Swiper | any>(null)
   const [secondLevel, setSecondLevel] = useState<MenuItemRecord | null>(null)
   const [thirdLevel, setThirdLevel] = useState<MenuItemRecord | null>(null)
@@ -129,7 +128,6 @@ const MobileMenu = ({
   })
 
   const handleItemClick = (item: MenuItemRecord) => {
-    console.log('item click')
     if (hasChildItems(item)) {
       if (item.parent) {
         setThirdLevel(item)
@@ -166,7 +164,7 @@ const MobileMenu = ({
     <StlyedMobileMenu
       open={open}
       color={color}
-      headerHeight={headerHeight}
+      headerHeight={headerProps.heightSm}
       className='MobileMenu-root'
       {...swipeHandlers}
     >

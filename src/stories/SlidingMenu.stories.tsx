@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Box, Button, Drawer } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 import menuItems from '../data/menuItems'
 import { useSlidingMenu, useToggle } from '../hooks'
+import Drawer from '../components/Drawer'
 import SlidingMenu from '../components/SlidingMenu'
 
 export default {
@@ -47,13 +48,7 @@ const DrawerTemplate: ComponentStory<typeof SlidingMenu> = (args) => {
   return (
     <Box>
       <Button onClick={drawer.show}>Toggle Menu</Button>
-      <Drawer
-        open={drawer.open}
-        onClose={drawer.hide}
-        sx={{
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 250 }
-        }}
-      >
+      <Drawer open={drawer.open} onClose={drawer.hide}>
         <SlidingMenu
           {...args}
           items={menu.items}
