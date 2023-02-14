@@ -38,6 +38,21 @@ const ResponsiveMain = {
   } as ResponsiveMainDefaultProps
 }
 
+const componentProps = {
+  ResponsiveHeader: {
+    ...ResponsiveHeader.defaultProps
+  }
+}
+
+export const setProps = (name: string, props: Record<string, any>) => {
+  componentProps[name] = {
+    ...componentProps[name],
+    ...props
+  }
+}
+
+export const getProps = (name: string) => componentProps[name] || {}
+
 export default {
   ResponsiveHeader,
   MobileMenu,

@@ -10,14 +10,15 @@ import {
 } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import { Swiper as ReactSwiper, SwiperSlide } from 'swiper/react'
-import Swiper from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import swiper from 'swiper'
 import clsx from 'clsx'
 
 import { hasChildItems } from '../utils'
 import { MenuItemRecord, ThemeColorProp } from '../types'
 
 export interface SlidingMenuProps {
+  testId?: string
   items: MenuItemRecord[]
   title?: React.ReactNode
   variant?: 'default' | 'lined'
@@ -33,7 +34,7 @@ export interface SlidingMenuProps {
   prevIcon?: React.ReactNode
   nextIconColor?: ThemeColorProp
   prevIconColor?: ThemeColorProp
-  onInit(swiperInstance: Swiper): void
+  onInit(swiperInstance: swiper): void
   onItemClick(item: MenuItemRecord): void
   onBackClick(): void
 }
@@ -55,6 +56,7 @@ const StyledSlidingMenu = styled(Box)<Partial<SlidingMenuProps>>(
 )
 
 const SlidingMenu = ({
+  testId = 'sliding-menu',
   items = [],
   title,
   variant = 'default',
@@ -74,14 +76,19 @@ const SlidingMenu = ({
 }: SlidingMenuProps) => {
   const getMenuSection = (section: MenuItemRecord | null) => {
     return section !== null ? (
-      <Box className='SlidingMenuSection-root'>
+      <Box
+        data-testid={`${testId}-section`}
+        className='SlidingMenuSection-root'
+      >
         <List disablePadding>
           <ListItemButton
+            data-testid={`${testId}-menu-item-back`}
             className='SlidingMenuItem-parent'
             sx={{ pl: 1 }}
             onClick={() => onBackClick()}
           >
             <Box
+              data-testid={`${testId}-icon-prev`}
               className='SlidingMenuItem-icon SlidingMenuItemIcon-prev'
               display='inline-flex'
             >
@@ -98,6 +105,7 @@ const SlidingMenu = ({
           </ListItemButton>
           {section.childItems?.map((item: MenuItemRecord) => (
             <ListItemButton
+              data-testid={`${testId}-menu-item`}
               selected={item.active}
               disableRipple={item.active}
               disableTouchRipple={item.active}
@@ -128,8 +136,12 @@ const SlidingMenu = ({
   }
 
   return (
-    <StyledSlidingMenu variant={variant} className='SlidingMenu-root'>
-      <ReactSwiper
+    <StyledSlidingMenu
+      data-testid={testId}
+      variant={variant}
+      className='SlidingMenu-root'
+    >
+      <Swiper
         initialSlide={activeIndex}
         spaceBetween={0}
         slidesPerView={1}
@@ -139,7 +151,10 @@ const SlidingMenu = ({
         <SwiperSlide>
           <List disablePadding>
             {title && (
-              <ListItem className='SlidingMenuItem-title'>
+              <ListItem
+                className='SlidingMenuItem-title'
+                data-testid={`${testId}-menu-item-title`}
+              >
                 <ListItemText
                   primary={title}
                   primaryTypographyProps={titleTypographyProps}
@@ -148,6 +163,9 @@ const SlidingMenu = ({
             )}
             {items.map((item: MenuItemRecord) => (
               <ListItemButton
+                data-testid={`${testId}-menu-item${
+                  hasChildItems(item) ? '-parent' : ''
+                }`}
                 selected={item.active}
                 disableRipple={item.active}
                 disableTouchRipple={item.active}
@@ -171,6 +189,7 @@ const SlidingMenu = ({
                 />
                 {hasChildItems(item) && (
                   <Box
+                    data-testid={`${testId}-icon-next`}
                     className='SlidingMenuItem-icon SlidingMenuItemIcon-next'
                     display='inline-flex'
                   >
@@ -183,7 +202,7 @@ const SlidingMenu = ({
         </SwiperSlide>
         <SwiperSlide>{getMenuSection(secondLevel)}</SwiperSlide>
         <SwiperSlide>{getMenuSection(thirdLevel)}</SwiperSlide>
-      </ReactSwiper>
+      </Swiper>
     </StyledSlidingMenu>
   )
 }

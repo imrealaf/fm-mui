@@ -1,4 +1,4 @@
-import { MenuItemRecord } from '../../types'
+import { MenuItemRecord } from '../types'
 
 const menuItems: MenuItemRecord[] = [
   {

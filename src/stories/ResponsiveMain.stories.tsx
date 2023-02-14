@@ -11,7 +11,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import SearchIcon from '@mui/icons-material/Search'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import menuItems from './data/menuItems'
+import menuItems from '../data/menuItems'
 import ResponsiveHeader from '../components/ResponsiveHeader'
 import ResponsiveMain from '../components/ResponsiveMain'
 import { useToggle, useToggleByAnchor } from '../hooks'

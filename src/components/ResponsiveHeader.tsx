@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { AppBar, AppBarProps, styled, Toolbar, Box } from '@mui/material'
 import { Spiral as Hamburger } from 'hamburger-react'
 
-import config from '../config'
-import { transformData } from '../utils'
+import config, { setProps } from '../config'
 import MobileMenu from './MobileMenu'
 import DesktopMenu from './DesktopMenu'
 import { ThemeColorProp, MenuItemRecord } from '../types'
 import { useBreakpoint } from '../hooks'
 
+const defaultProps = config.ResponsiveHeader.defaultProps
 const BURGER_HEIGHT = 48
 
 export interface ResponsiveHeaderProps extends AppBarProps {
@@ -39,8 +39,8 @@ const StyledResponsiveHeader = styled(AppBar, {
   ({
     theme,
     open,
-    height = config.ResponsiveHeader.defaultProps.height,
-    heightSm = config.ResponsiveHeader.defaultProps.heightSm,
+    height = defaultProps.height,
+    heightSm = defaultProps.heightSm,
     brandPosition = 'center',
     hideActionsOnToggle,
     showActions
@@ -118,12 +118,12 @@ const StyledResponsiveHeader = styled(AppBar, {
 )
 
 const ResponsiveHeader = ({
-  position = config.ResponsiveHeader.defaultProps.position,
-  height = config.ResponsiveHeader.defaultProps.height,
-  heightSm = config.ResponsiveHeader.defaultProps.heightSm,
+  position = defaultProps.position,
+  height = defaultProps.height,
+  heightSm = defaultProps.heightSm,
   brand = 'App',
   brandPosition,
-  color = config.ResponsiveHeader.defaultProps.color,
+  color = defaultProps.color,
   actions,
   hideOnScroll = false,
   hideActionsOnToggle = false,
@@ -135,6 +135,14 @@ const ResponsiveHeader = ({
   menuFooter,
   onToggle
 }: ResponsiveHeaderProps) => {
+  /** Handle config values */
+  setProps('ResponsiveHeader', {
+    position,
+    height,
+    heightSm,
+    color
+  })
+
   const bp = useBreakpoint()
   const [pageY, setPageY] = useState(0)
   const [lastScrollPosition, setLastScrollPosition] = useState(0)

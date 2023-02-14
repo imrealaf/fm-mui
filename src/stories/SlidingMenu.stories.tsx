@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Box, Button, Drawer } from '@mui/material'
 
-import menuItems from './data/menuItems'
+import menuItems from '../data/menuItems'
 import { useSlidingMenu, useToggle } from '../hooks'
 import SlidingMenu from '../components/SlidingMenu'
 
