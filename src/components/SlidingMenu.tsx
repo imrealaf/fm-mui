@@ -3,10 +3,13 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  ListItemIcon,
   Box,
   styled,
   TypographyProps,
-  ListItem
+  ListItem,
+  SvgIcon,
+  SvgIconProps
 } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -15,7 +18,7 @@ import swiper from 'swiper'
 import clsx from 'clsx'
 
 import { hasChildItems } from '../utils'
-import { MenuItemRecord, ThemeColorProp } from '../types'
+import { MenuItemRecord } from '../types'
 
 export interface SlidingMenuProps {
   testId?: string
@@ -27,13 +30,14 @@ export interface SlidingMenuProps {
   thirdLevel?: MenuItemRecord | null
   titleTypographyProps?: TypographyProps
   itemTypographyProps?: TypographyProps
+  itemIconProps?: SvgIconProps
   parentItemTypographyProps?: TypographyProps
   activeItemTypographyProps?: TypographyProps
   activeItemClass?: string
-  nextIcon?: React.ReactNode
-  prevIcon?: React.ReactNode
-  nextIconColor?: ThemeColorProp
-  prevIconColor?: ThemeColorProp
+  nextIcon?: typeof SvgIcon
+  prevIcon?: typeof SvgIcon
+  nextIconProps?: SvgIconProps
+  prevIconProps?: SvgIconProps
   onInit(swiperInstance: swiper): void
   onItemClick(item: MenuItemRecord): void
   onBackClick(): void
@@ -41,6 +45,9 @@ export interface SlidingMenuProps {
 
 const StyledSlidingMenu = styled(Box)<Partial<SlidingMenuProps>>(
   ({ theme, variant = 'default' }) => ({
+    '.MuiListItemIcon-root': {
+      minWidth: theme.spacing(4.5)
+    },
     ...(variant === 'lined' && {
       '.SlidingMenuItem-title': {
         borderBottom: `1px solid ${theme.palette.divider}`
@@ -68,8 +75,11 @@ const SlidingMenu = ({
   itemTypographyProps,
   parentItemTypographyProps,
   activeItemTypographyProps,
-  nextIcon = <ChevronRightIcon />,
-  prevIcon = <ChevronLeftIcon />,
+  nextIcon = ChevronRightIcon,
+  prevIcon = ChevronLeftIcon,
+  itemIconProps,
+  nextIconProps,
+  prevIconProps,
   onInit,
   onItemClick,
   onBackClick
@@ -92,7 +102,7 @@ const SlidingMenu = ({
               className='SlidingMenuItem-icon SlidingMenuItemIcon-prev'
               display='inline-flex'
             >
-              {prevIcon}
+              {React.createElement(prevIcon, prevIconProps)}
             </Box>
             <ListItemText
               primary={section.title}
@@ -119,6 +129,11 @@ const SlidingMenu = ({
               key={item.title}
               onClick={() => onItemClick(item)}
             >
+              {item.icon && (
+                <ListItemIcon>
+                  {React.createElement(item.icon, itemIconProps)}
+                </ListItemIcon>
+              )}
               <ListItemText
                 primary={item.title}
                 primaryTypographyProps={
@@ -127,7 +142,8 @@ const SlidingMenu = ({
                     : itemTypographyProps
                 }
               />
-              {hasChildItems(item) && nextIcon}
+              {hasChildItems(item) &&
+                React.createElement(nextIcon, nextIconProps)}
             </ListItemButton>
           ))}
         </List>
@@ -179,6 +195,11 @@ const SlidingMenu = ({
                 key={item.title}
                 onClick={() => onItemClick(item)}
               >
+                {item.icon && (
+                  <ListItemIcon>
+                    {React.createElement(item.icon, itemIconProps)}
+                  </ListItemIcon>
+                )}
                 <ListItemText
                   primary={item.title}
                   primaryTypographyProps={
@@ -193,7 +214,7 @@ const SlidingMenu = ({
                     className='SlidingMenuItem-icon SlidingMenuItemIcon-next'
                     display='inline-flex'
                   >
-                    {nextIcon}
+                    {React.createElement(nextIcon, nextIconProps)}
                   </Box>
                 )}
               </ListItemButton>

@@ -34,7 +34,8 @@
   },
   "eslintConfig": {
     "rules": {
-      "dot-notation": "off"
+      "dot-notation": "off",
+      "no-unused-vars": "off"
     }
   },
   "browserslist": {

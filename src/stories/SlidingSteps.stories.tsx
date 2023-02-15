@@ -16,7 +16,7 @@ import SlidingSteps from '../components/SlidingSteps'
 import { useSlidingSteps, useToggle } from '../hooks'
 
 export default {
-  title: 'Components/Custom/SlidingSteps',
+  title: 'Custom/Navigation/SlidingSteps',
   component: SlidingSteps,
   parameters: {
     layout: 'fullscreen'

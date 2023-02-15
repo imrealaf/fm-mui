@@ -1,15 +1,12 @@
 import React from 'react'
-import { Container } from '@mui/material'
 import { ResponsiveMain } from 'fm-mui'
 
-interface MainProps {
-  children: React.ReactNode
-}
+import Routes from '../routes'
 
-const Main = ({ children }: MainProps) => {
+const Main = () => {
   return (
     <ResponsiveMain>
-      <Container>{children}</Container>
+      <Routes />
     </ResponsiveMain>
   )
 }

@@ -6,18 +6,17 @@ import {
   ResponsiveHeader,
   useToggle,
   useToggleByAnchor,
-  SearchDialog
+  SearchDialog,
+  MenuItemRecord
 } from 'fm-mui'
-
 import { useSearch } from '../hooks'
 
-const menuItems = [
-  {
-    title: 'About'
-  }
-]
+export interface HeaderProps {
+  items?: MenuItemRecord[]
+  mobileMenuItems?: MenuItemRecord[]
+}
 
-const Header = () => {
+const Header = ({ items = [], mobileMenuItems = [] }: HeaderProps) => {
   const { searchValue, clearSearch, submitSearch, onSearchChange } = useSearch()
   const mobileMenu = useToggle()
   const searchDialog = useToggle()
@@ -72,7 +71,8 @@ const Header = () => {
       />
       <ResponsiveHeader
         open={mobileMenu.open}
-        menuItems={menuItems}
+        menuItems={items}
+        mobileMenuItems={mobileMenuItems}
         onToggle={mobileMenu.toggle}
         actions={actions}
       />

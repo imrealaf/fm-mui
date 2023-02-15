@@ -1,3 +1,5 @@
+import { SvgIcon } from '@mui/material'
+
 export type ThemeColorProp =
   | 'inherit'
   | 'primary'
@@ -13,6 +15,7 @@ export interface MenuItemRecord {
   parent?: MenuItemRecord
   grandparent?: MenuItemRecord
   level?: number
+  icon?: typeof SvgIcon
 }
 
 export type AppBarPosition =

@@ -7,7 +7,7 @@ import ResponsiveHeader from '../components/ResponsiveHeader'
 import ResponsiveMain from '../components/ResponsiveMain'
 
 export default {
-  title: 'Components/Custom/ResponsiveMain',
+  title: 'Custom/Layout/ResponsiveMain',
   component: ResponsiveMain,
   parameters: {
     layout: 'fullscreen'
@@ -39,7 +39,7 @@ const DrawerTemplate: ComponentStory<typeof ResponsiveMain> = (args) => {
   )
 
   return (
-    <Box>
+    <Box sx={{ height: 2000 }}>
       <ResponsiveHeader />
       <ResponsiveMain {...args} drawer={drawer}>
         <Container

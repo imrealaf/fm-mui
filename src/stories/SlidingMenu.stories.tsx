@@ -8,7 +8,7 @@ import Drawer from '../components/Drawer'
 import SlidingMenu from '../components/SlidingMenu'
 
 export default {
-  title: 'Components/Custom/SlidingMenu',
+  title: 'Custom/Navigation/SlidingMenu',
   component: SlidingMenu,
   parameters: {
     layout: 'fullscreen'

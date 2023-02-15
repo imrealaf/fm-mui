@@ -85,7 +85,7 @@ export const handleEnterKey = (
 export const hasChildItems = (item: MenuItemRecord) =>
   item.childItems && item.childItems.length > 0
 
-export const transformData = (items: MenuItemRecord[] = [], inc = 0) => {
+export const transformData = (items: MenuItemRecord[] = []) => {
   items.forEach((item) => {
     item.level = 0
     if (hasChildItems(item)) {

@@ -77,24 +77,33 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
               onClick: dd.show
             }
           : {}
-        return (
-          <Link
-            key={item.title}
-            color='inherit'
-            className={clsx('DesktopMenuLink-root', {
-              'DesktopMenuLink-toggle': hasChildItems(item),
-              'DesktopMenuLink-active': item.active
-            })}
-            {...linkProps}
-          >
-            {item.title}
-            {hasChildItems(item) && (
-              <Box display='inline-flex' className='DesktopMenuLink-icon'>
-                {dd.open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </Box>
-            )}
-            {hasChildItems(item) && (
+        return [
+          [
+            <Link
+              key={item.title}
+              color='inherit'
+              className={clsx('DesktopMenuLink-root', {
+                'DesktopMenuLink-toggle': hasChildItems(item),
+                'DesktopMenuLink-active': item.active
+              })}
+              {...linkProps}
+            >
+              {item.title}
+              {hasChildItems(item) && (
+                <Box display='inline-flex' className='DesktopMenuLink-icon'>
+                  {dd.open ? (
+                    <KeyboardArrowUpIcon />
+                  ) : (
+                    <KeyboardArrowDownIcon />
+                  )}
+                </Box>
+              )}
+            </Link>
+          ],
+          [
+            hasChildItems(item) && (
               <StyledDropdown
+                key={item.title}
                 open={dd.open}
                 anchorEl={dd.anchorEl}
                 onClose={dd.hide}
@@ -114,33 +123,38 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
                         onClick: level2dd.show
                       }
                     : {}
-                  return (
-                    <Link
-                      key={childItem.title}
-                      {...childLinkProps}
-                      className={clsx('DesktopMenuDropdownLink-root', {
-                        'DesktopMenuDropdownLink-toggle':
-                          hasChildItems(childItem),
-                        'DesktopMenuDropdownLink-active': childItem.active
-                      })}
-                      color='inherit'
-                      sx={{ px: 1 }}
-                    >
-                      {childItem.title}
-                      {hasChildItems(childItem) && (
-                        <Box
-                          display='inline-flex'
-                          className='DesktopMenuDropdownLink-icon'
-                        >
-                          {level2dd.open ? (
-                            <KeyboardArrowUpIcon />
-                          ) : (
-                            <KeyboardArrowDownIcon />
-                          )}
-                        </Box>
-                      )}
-                      {hasChildItems(childItem) && (
+                  return [
+                    [
+                      <Link
+                        key={childItem.title}
+                        {...childLinkProps}
+                        className={clsx('DesktopMenuDropdownLink-root', {
+                          'DesktopMenuDropdownLink-toggle':
+                            hasChildItems(childItem),
+                          'DesktopMenuDropdownLink-active': childItem.active
+                        })}
+                        color='inherit'
+                        sx={{ px: 1 }}
+                      >
+                        {childItem.title}
+                        {hasChildItems(childItem) && (
+                          <Box
+                            display='inline-flex'
+                            className='DesktopMenuDropdownLink-icon'
+                          >
+                            {level2dd.open ? (
+                              <KeyboardArrowUpIcon />
+                            ) : (
+                              <KeyboardArrowDownIcon />
+                            )}
+                          </Box>
+                        )}
+                      </Link>
+                    ],
+                    [
+                      hasChildItems(childItem) && (
                         <Menu
+                          key={childItem.title}
                           open={level2dd.open}
                           anchorEl={level2dd.anchorEl}
                           onClose={level2dd.hide}
@@ -151,14 +165,14 @@ const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
                             </MenuItem>
                           ))}
                         </Menu>
-                      )}
-                    </Link>
-                  )
+                      )
+                    ]
+                  ]
                 })}
               </StyledDropdown>
-            )}
-          </Link>
-        )
+            )
+          ]
+        ]
       })}
     </StyledDesktopMenu>
   )

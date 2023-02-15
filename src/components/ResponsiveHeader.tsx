@@ -22,6 +22,7 @@ export interface ResponsiveHeaderProps extends AppBarProps {
   open?: boolean
   menuColor?: ThemeColorProp
   menuItems?: MenuItemRecord[]
+  mobileMenuItems?: MenuItemRecord[]
   menuHeader?: React.ReactNode
   menuFooter?: React.ReactNode
   menuIconSize?: number
@@ -129,6 +130,7 @@ const ResponsiveHeader = ({
   hideActionsOnToggle = false,
   open = false,
   menuItems = [],
+  mobileMenuItems = [],
   menuColor = 'secondary',
   menuIconSize = 21,
   menuHeader,
@@ -150,6 +152,8 @@ const ResponsiveHeader = ({
   const [showActions, setShowActions] = useState(true)
   const scrollValue = bp[config.global.mobileBpQuery] ? heightSm : height
   const hasMenuItems = menuItems && menuItems.length > 0
+  const hasMobileMenuItems =
+    (mobileMenuItems && mobileMenuItems.length > 0) || hasMenuItems
 
   const onScroll = () => {
     setPageY(window.pageYOffset)
@@ -223,10 +227,10 @@ const ResponsiveHeader = ({
       }}
     >
       <Toolbar>
-        {hasMenuItems && bp[config.global.mobileBpQuery] && (
+        {hasMobileMenuItems && bp[config.global.mobileBpQuery] && (
           <MobileMenu
             open={open}
-            items={menuItems}
+            items={mobileMenuItems || menuItems}
             onToggle={onToggle}
             color={menuColor}
             header={menuHeader}
@@ -236,7 +240,7 @@ const ResponsiveHeader = ({
         <Box className='ResponsiveHeader-content'>
           {bp[config.global.mobileBpQuery] ? (
             <>
-              {hasMenuItems && (
+              {hasMobileMenuItems && (
                 <Hamburger
                   size={menuIconSize}
                   toggled={open}

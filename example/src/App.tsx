@@ -1,14 +1,20 @@
 import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { ResponsiveMain } from 'fm-mui'
 
+import { mainMenu } from './menus'
+import Routes from './routes'
 import Header from './components/Header'
-import Main from './components/Main'
+import SideNav from './components/SideNav'
 
 const App = () => {
   return (
-    <>
-      <Header />
-      <Main>content</Main>
-    </>
+    <BrowserRouter>
+      <Header mobileMenuItems={mainMenu} />
+      <ResponsiveMain drawer={<SideNav items={mainMenu} />}>
+        <Routes />
+      </ResponsiveMain>
+    </BrowserRouter>
   )
 }
 
