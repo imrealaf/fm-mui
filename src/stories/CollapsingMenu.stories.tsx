@@ -31,7 +31,7 @@ const items = [
 ]
 
 export default {
-  title: 'Custom/Navigation/CollapsingMenu',
+  title: 'Navigation/CollapsingMenu',
   component: CollapsingMenu,
   parameters: {
     layout: 'fullscreen'

@@ -9,7 +9,7 @@ import ResponsiveHeader from '../components/ResponsiveHeader'
 import { useToggle, useToggleByAnchor } from '../hooks'
 
 export default {
-  title: 'Custom/Layout/ResponsiveHeader',
+  title: 'Layout/ResponsiveHeader',
   component: ResponsiveHeader,
   parameters: {
     layout: 'fullscreen'

@@ -7,7 +7,7 @@ import ResponsiveHeader from '../components/ResponsiveHeader'
 import ResponsiveMain from '../components/ResponsiveMain'
 
 export default {
-  title: 'Custom/Layout/ResponsiveMain',
+  title: 'Layout/ResponsiveMain',
   component: ResponsiveMain,
   parameters: {
     layout: 'fullscreen'

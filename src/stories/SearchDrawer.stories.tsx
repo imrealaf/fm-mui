@@ -7,7 +7,7 @@ import { handleTextChange } from '../utils'
 import { useToggle } from '../hooks'
 
 export default {
-  title: 'Custom/Offcanvas/SearchDrawer',
+  title: 'Offcanvas/SearchDrawer',
   component: SearchDrawer,
   parameters: {}
 } as ComponentMeta<typeof SearchDrawer>

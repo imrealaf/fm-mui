@@ -12,7 +12,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 
-import { handleEnterKey } from '../utils'
+import { handleEnterKey, handleTextChange } from '../utils'
 
 export interface SearchFieldProps extends OutlinedInputProps {
   testId?: string
@@ -27,6 +27,7 @@ export interface SearchFieldProps extends OutlinedInputProps {
   clearBtnProps?: IconButtonProps
   onClear?(): void
   onSubmit?(): void
+  onChanged?(data?: { name: string; value: any }): void
 }
 
 const StyledSearchField = styled(OutlinedInput, {
@@ -77,6 +78,8 @@ const SearchField = ({
   clearBtnProps,
   onClear = () => {},
   onSubmit = () => {},
+  onChange,
+  onChanged,
   ...rest
 }: SearchFieldProps) => {
   const showClear = value.length > 0
@@ -96,6 +99,13 @@ const SearchField = ({
       elevationOnFocus={elevationOnFocus}
       value={value}
       onKeyDown={onKeyDown}
+      onChange={(e) => {
+        if (onChanged) {
+          handleTextChange(e, onChanged)
+        } else if (onChange) {
+          onChange(e)
+        }
+      }}
       endAdornment={
         <InputAdornment position='end'>
           <Fade in={showClear}>

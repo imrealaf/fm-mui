@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import SearchField from '../components/SearchField'
 
 export default {
-  title: 'Custom/Inputs/SearchField',
+  title: 'Inputs/SearchField',
   component: SearchField,
   parameters: {},
   argsTypes: {
@@ -23,7 +23,7 @@ const Template: ComponentStory<typeof SearchField> = (args) => {
     <SearchField
       {...args}
       value={value}
-      onChange={(e) => setValue(e.target.value)}
+      onChanged={(data) => setValue(data?.value)}
       onClear={handleClear}
       sx={{ width: 300 }}
     />
