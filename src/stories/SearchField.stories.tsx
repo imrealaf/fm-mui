@@ -5,7 +5,13 @@ import SearchField from '../components/SearchField'
 export default {
   title: 'Custom/Inputs/SearchField',
   component: SearchField,
-  parameters: {}
+  parameters: {},
+  argsTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium']
+    }
+  }
 } as ComponentMeta<typeof SearchField>
 
 const Template: ComponentStory<typeof SearchField> = (args) => {
@@ -26,6 +32,11 @@ const Template: ComponentStory<typeof SearchField> = (args) => {
 
 export const Default = Template.bind({})
 Default.args = {
+  onSubmit: () => alert('Submit search')
+}
+
+export const Small = Template.bind({})
+Small.args = {
   onSubmit: () => alert('Submit search'),
-  disableEnterKeySubmit: true
+  size: 'small'
 }

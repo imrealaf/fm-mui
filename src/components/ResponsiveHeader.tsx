@@ -245,6 +245,7 @@ const ResponsiveHeader = ({
             <>
               {hasMobileMenuItems && (
                 <Hamburger
+                  data-testid={`${testId}-mobile-menu-toggle`}
                   size={menuIconSize}
                   toggled={open}
                   toggle={onToggle}
@@ -253,7 +254,12 @@ const ResponsiveHeader = ({
               )}
               {brand && <Box className='ResponsiveHeader-brand'>{brand}</Box>}
               {actions && (
-                <Box className='ResponsiveHeader-actions'>{actions}</Box>
+                <Box
+                  data-testid={`${testId}-actions`}
+                  className='ResponsiveHeader-actions'
+                >
+                  {actions}
+                </Box>
               )}
             </>
           ) : (
@@ -264,7 +270,12 @@ const ResponsiveHeader = ({
               <Box display='flex'>
                 {hasMenuItems && <DesktopMenu items={menuItems} />}
                 {actions && (
-                  <Box className='ResponsiveHeader-actions'>{actions}</Box>
+                  <Box
+                    data-testid={`${testId}-actions`}
+                    className='ResponsiveHeader-actions'
+                  >
+                    {actions}
+                  </Box>
                 )}
               </Box>
             </>

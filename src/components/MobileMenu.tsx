@@ -10,6 +10,7 @@ import { hasChildItems, transformData } from '../utils'
 import { MenuItemRecord, ThemeColorProp } from '../types'
 
 export interface MobileMenuProps {
+  testId?: string
   open?: boolean
   color?: ThemeColorProp
   items?: MenuItemRecord[]
@@ -19,18 +20,20 @@ export interface MobileMenuProps {
 }
 
 interface MobileMenuSectionProps {
+  testId?: string
   section: MenuItemRecord | null
   handleBackClick(): void
   handleItemClick(item: MenuItemRecord): void
 }
 
 const MobileMenuSection = ({
+  testId,
   section,
   handleBackClick,
   handleItemClick
 }: MobileMenuSectionProps) => {
   return section !== null ? (
-    <List disablePadding>
+    <List disablePadding data-testid={`${testId}-section`}>
       <ListItemButton sx={{ pl: 1 }} onClick={() => handleBackClick()}>
         <ChevronLeftIcon />
         <ListItemText
@@ -104,6 +107,7 @@ const StlyedMobileMenu = styled(Box, {
 )
 
 const MobileMenu = ({
+  testId = 'mobile-menu',
   open = false,
   color = 'secondary',
   items = [],
@@ -112,9 +116,13 @@ const MobileMenu = ({
   onToggle
 }: MobileMenuProps) => {
   const headerProps = getProps('ResponsiveHeader')
-  const [swiper, setSwiper] = useState<typeof Swiper | any>(null)
-  const [secondLevel, setSecondLevel] = useState<MenuItemRecord | null>(null)
-  const [thirdLevel, setThirdLevel] = useState<MenuItemRecord | null>(null)
+  const [swiper, setSwiper] = React.useState<typeof Swiper | any>(null)
+  const [secondLevel, setSecondLevel] = React.useState<MenuItemRecord | null>(
+    null
+  )
+  const [thirdLevel, setThirdLevel] = React.useState<MenuItemRecord | null>(
+    null
+  )
   const hasMenuItems = items && items.length > 0
 
   if (hasMenuItems) {
@@ -162,6 +170,7 @@ const MobileMenu = ({
 
   return (
     <StlyedMobileMenu
+      data-testid={testId}
       open={open}
       color={color}
       headerHeight={headerProps.heightSm}
@@ -195,6 +204,7 @@ const MobileMenu = ({
                 </SwiperSlide>
                 <SwiperSlide>
                   <MobileMenuSection
+                    testId={testId}
                     section={secondLevel}
                     handleBackClick={handleBackClick}
                     handleItemClick={handleItemClick}
@@ -202,6 +212,7 @@ const MobileMenu = ({
                 </SwiperSlide>
                 <SwiperSlide>
                   <MobileMenuSection
+                    testId={testId}
                     section={thirdLevel}
                     handleBackClick={handleBackClick}
                     handleItemClick={handleItemClick}

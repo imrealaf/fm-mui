@@ -13,11 +13,11 @@ export interface DrawerProps extends MuiDrawerProps {}
 const StyledDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'drawerWidth'
 })<DrawerProps & { drawerWidth: number }>(
-  ({ theme, drawerWidth, variant }) => ({
-    width: drawerWidth,
+  ({ theme, drawerWidth, variant, anchor }) => ({
+    width: anchor !== 'top' ? drawerWidth : '',
     flexShrink: 0,
     '& .MuiDrawer-paper': {
-      width: drawerWidth,
+      width: anchor !== 'top' ? drawerWidth : '',
       boxSizing: 'border-box',
 
       ...(variant === 'permanent' && {
@@ -27,10 +27,11 @@ const StyledDrawer = styled(MuiDrawer, {
   })
 )
 
-const Drawer = ({ variant, children, ...rest }: DrawerProps) => {
+const Drawer = ({ variant, anchor, children, ...rest }: DrawerProps) => {
   const headerHeight = getProp('ResponsiveHeader', 'height')
   return (
     <StyledDrawer
+      anchor={anchor}
       variant={variant}
       drawerWidth={config.global.drawerWidth}
       {...rest}
