@@ -12,6 +12,7 @@ const defaultProps = config.ResponsiveHeader.defaultProps
 const BURGER_HEIGHT = 48
 
 export interface ResponsiveHeaderProps extends AppBarProps {
+  testId?: string
   height?: number
   heightSm?: number
   brand?: React.ReactNode
@@ -119,6 +120,7 @@ const StyledResponsiveHeader = styled(AppBar, {
 )
 
 const ResponsiveHeader = ({
+  testId = 'responsive-header',
   position = defaultProps.position,
   height = defaultProps.height,
   heightSm = defaultProps.heightSm,
@@ -213,6 +215,7 @@ const ResponsiveHeader = ({
 
   return (
     <StyledResponsiveHeader
+      data-testid={testId}
       position={position}
       height={height}
       heightSm={heightSm}

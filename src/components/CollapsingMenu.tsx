@@ -16,13 +16,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import clsx from 'clsx'
 
 import { hasChildItems } from '../utils'
-import { MenuItemRecord, ThemeColorProp } from '../types'
+import { MenuItemRecord } from '../types'
 import { useToggle } from '../hooks'
 
 export interface CollapsingMenuProps {
   testId?: string
   variant?: 'default' | 'lined'
-  items: MenuItemRecord[]
+  items?: MenuItemRecord[]
   itemIconProps?: SvgIconProps
   itemTypographyProps?: TypographyProps
   activeItemTypographyProps?: TypographyProps
@@ -43,7 +43,7 @@ const StyledCollapsingMenu = styled(Box, {
     ...(variant === 'lined' && {
       borderTop: `1px solid ${theme.palette.divider}`,
       '&:first-of-type': {
-        borderBottom: 'none'
+        borderTop: 'none'
       }
     })
   },
@@ -82,6 +82,7 @@ const CollapsingMenu = ({
           return [
             [
               <ListItemButton
+                data-testid={`${testId}-menu-item`}
                 key={item.title}
                 className={clsx(
                   'CollapsingMenuItem-root',
@@ -94,7 +95,7 @@ const CollapsingMenu = ({
                 {...itemProps}
               >
                 {item.icon && (
-                  <ListItemIcon>
+                  <ListItemIcon data-testid={`${testId}-menu-item-icon`}>
                     {React.createElement(item.icon, itemIconProps)}
                   </ListItemIcon>
                 )}
@@ -120,12 +121,15 @@ const CollapsingMenu = ({
                     {item.childItems?.map((childItem) => (
                       <ListItemButton
                         key={childItem.title}
+                        data-testid={`${testId}-menu-child-item`}
                         className={clsx('CollapsingMenuChildItem-root', {
                           'CollapsingMenuChildItem-active': childItem.active
                         })}
                       >
                         {childItem.icon && (
-                          <ListItemIcon>
+                          <ListItemIcon
+                            data-testid={`${testId}-menu-child-item-icon`}
+                          >
                             {React.createElement(childItem.icon, itemIconProps)}
                           </ListItemIcon>
                         )}
