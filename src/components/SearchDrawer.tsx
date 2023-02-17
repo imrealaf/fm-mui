@@ -29,7 +29,7 @@ const StyledSearchDrawer = styled(Drawer, {
   },
 
   '.MuiInputBase-root': {
-    padding: `0 ${theme.spacing(1)} 0 ${theme.spacing(2)}`,
+    padding: `0 ${theme.spacing(1)} 0 ${theme.spacing(1)}`,
 
     '.MuiInputBase-input': {
       padding: 0,

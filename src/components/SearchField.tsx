@@ -5,25 +5,29 @@ import {
   InputAdornment,
   OutlinedInput,
   OutlinedInputProps,
+  SvgIcon,
   SvgIconProps,
   styled,
   Fade
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import CloseIcon from '@mui/icons-material/Close'
 
 import { handleEnterKey, handleTextChange } from '../utils'
 
 export interface SearchFieldProps extends OutlinedInputProps {
+  variant?: 'filled' | 'outlined'
   testId?: string
   value?: string
   naked?: boolean
-  disableEnterKeySubmit?: boolean
   elevationOnHover?: boolean
   elevationOnFocus?: boolean
   IconButtonProps?: IconButtonProps
   IconProps?: SvgIconProps
-  submitBtnProps?: IconButtonProps
+  searchIcon?: typeof SvgIcon
+  searchIconProps?: SvgIconProps
+  clearIcon?: typeof SvgIcon
+  clearIconProps?: SvgIconProps
   clearBtnProps?: IconButtonProps
   onClear?(): void
   onSubmit?(): void
@@ -36,56 +40,75 @@ const StyledSearchField = styled(OutlinedInput, {
     prop !== 'elevationOnFocus' &&
     prop !== 'naked'
 })<Partial<SearchFieldProps>>(
-  ({ theme, elevationOnHover, elevationOnFocus, naked }) => ({
+  ({ theme, elevationOnHover, elevationOnFocus, naked, variant }) => ({
     border: 'none',
-    paddingLeft: theme.spacing(1),
+    // paddingLeft: theme.spacing(1),
     transition: 'all .2s ease',
+    borderRadius: theme.shape.borderRadius > 0 ? 30 : 0,
 
-    '.MuiOutlinedInput-notchedOutline': {
-      display: 'none'
+    '.MuiInputAdornment-positionStart': {
+      display: 'flex',
+      alignItems: 'center',
+      paddingLeft: theme.spacing(0.5)
     },
 
-    ...(!naked && {
-      borderRadius: 30,
-      background: theme.palette.grey[100],
-
-      ...(elevationOnHover && {
-        '&:hover': {
-          boxShadow: theme.shadows[2]
-        }
+    ...(variant === 'filled' &&
+      !naked && {
+        background: theme.palette.grey[100]
       }),
 
-      ...(elevationOnFocus && {
-        '&.Mui-focused': {
-          boxShadow: theme.shadows[2]
+    ...(variant === 'filled' || naked
+      ? {
+          '.MuiOutlinedInput-notchedOutline': {
+            display: 'none'
+          }
         }
-      })
-    })
+      : {}),
+
+    ...(!naked
+      ? {
+          ...(elevationOnHover && {
+            '&:hover': {
+              boxShadow: theme.shadows[2]
+            }
+          }),
+
+          ...(elevationOnFocus && {
+            '&.Mui-focused': {
+              boxShadow: theme.shadows[2]
+            }
+          })
+        }
+      : {
+          borderRadius: 0
+        })
   })
 )
 
 const SearchField = ({
   testId = 'search-field',
+  variant = 'outlined',
   placeholder = 'Search ...',
   value = '',
   naked = false,
   elevationOnHover = false,
   elevationOnFocus = false,
-  disableEnterKeySubmit = false,
   IconButtonProps,
   IconProps,
-  submitBtnProps,
+  searchIcon = SearchIcon,
+  searchIconProps,
+  clearIcon = CloseIcon,
+  clearIconProps,
   clearBtnProps,
-  onClear = () => {},
-  onSubmit = () => {},
+  onClear,
+  onSubmit,
   onChange,
   onChanged,
   ...rest
 }: SearchFieldProps) => {
-  const showClear = value.length > 0
-  const submitDisabled = value.length === 0
+  const showClear = onClear && value.length > 0
   const onKeyDown = (event: React.KeyboardEvent) => {
-    if (value.length > 0 && !disableEnterKeySubmit) {
+    if (value.length > 0 && onSubmit) {
       handleEnterKey(event, onSubmit)
     }
   }
@@ -93,6 +116,7 @@ const SearchField = ({
     <StyledSearchField
       data-testid={testId}
       {...rest}
+      variant={variant}
       placeholder={placeholder}
       naked={naked}
       elevationOnHover={elevationOnHover}
@@ -106,6 +130,15 @@ const SearchField = ({
           onChange(e)
         }
       }}
+      startAdornment={
+        <InputAdornment position='start'>
+          {React.createElement(searchIcon, {
+            color: 'inherit',
+            ...IconProps,
+            ...searchIconProps
+          })}
+        </InputAdornment>
+      }
       endAdornment={
         <InputAdornment position='end'>
           <Fade in={showClear}>
@@ -116,19 +149,13 @@ const SearchField = ({
               {...clearBtnProps}
               onClick={onClear}
             >
-              <HighlightOffIcon {...IconProps} />
+              {React.createElement(clearIcon, {
+                color: 'inherit',
+                ...IconProps,
+                ...clearIconProps
+              })}
             </IconButton>
           </Fade>
-          <IconButton
-            data-testid={`${testId}-submit-btn`}
-            size='small'
-            disabled={submitDisabled}
-            {...IconButtonProps}
-            {...submitBtnProps}
-            onClick={onSubmit}
-          >
-            <SearchIcon {...IconProps} />
-          </IconButton>
         </InputAdornment>
       }
     />
