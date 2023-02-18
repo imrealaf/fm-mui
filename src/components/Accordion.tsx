@@ -11,8 +11,6 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-import config from '../config'
-
 export interface AccordionProps extends MuiAccordionProps {
   id: string
   summary: React.ReactNode
@@ -23,7 +21,7 @@ export interface AccordionProps extends MuiAccordionProps {
 
 const StyledAccordion = styled(MuiAccordion, {
   //   shouldForwardProp: (prop) => prop !== 'drawerWidth'
-})<Partial<AccordionProps>>(({ theme }) => ({}))
+})<Partial<AccordionProps>>(() => ({}))
 
 const Accordion = ({
   id,

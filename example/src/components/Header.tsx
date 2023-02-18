@@ -6,7 +6,7 @@ import {
   ResponsiveHeader,
   useToggle,
   useToggleByAnchor,
-  SearchDialog,
+  SearchDrawer,
   MenuItemRecord
 } from 'fm-mui'
 import { useSearch } from '../hooks'
@@ -19,11 +19,11 @@ export interface HeaderProps {
 const Header = ({ items = [], mobileMenuItems = [] }: HeaderProps) => {
   const { searchValue, clearSearch, submitSearch, onSearchChange } = useSearch()
   const mobileMenu = useToggle()
-  const searchDialog = useToggle()
+  const search = useToggle()
   const userMenu = useToggleByAnchor()
   const actions = (
     <>
-      <IconButton size='large' color='inherit' onClick={searchDialog.show}>
+      <IconButton size='large' color='inherit' onClick={search.show}>
         <SearchIcon />
       </IconButton>
       <IconButton size='large' onClick={userMenu.show} color='inherit'>
@@ -55,17 +55,17 @@ const Header = ({ items = [], mobileMenuItems = [] }: HeaderProps) => {
   )
 
   const handleSearchClose = () => {
-    searchDialog.hide()
+    search.hide()
     clearSearch()
   }
 
   return (
     <>
-      <SearchDialog
-        open={searchDialog.open}
+      <SearchDrawer
+        open={search.open}
         value={searchValue}
         onClose={handleSearchClose}
-        onChange={onSearchChange}
+        onChanged={onSearchChange}
         onClear={clearSearch}
         onSubmit={submitSearch}
       />

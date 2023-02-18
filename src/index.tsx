@@ -1,4 +1,11 @@
 import 'swiper/css'
+
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    outlinedElevation: true
+  }
+}
+
 export * from './components'
 export * from './hooks'
 export * from './utils'

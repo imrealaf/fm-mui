@@ -45,7 +45,7 @@ const StyledSearchDrawer = styled(Drawer, {
 const SearchDrawer = ({
   open = false,
   value = '',
-  onChange,
+  onChanged,
   onClose,
   onClear,
   onSubmit
@@ -65,7 +65,7 @@ const SearchDrawer = ({
         autoFocus={true}
         naked={true}
         value={value}
-        onChange={onChange}
+        onChanged={onChanged}
         onClear={onClear}
         onSubmit={onSubmit}
         IconProps={{

@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { render, screen, fireEvent, getByTestId } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 import { useStateMock } from '../test-utils'
@@ -24,20 +23,6 @@ const renderComponent = (props?: Partial<MobileMenuProps>) => {
   )
 }
 
-const rerenderComponent = (
-  props: Partial<MobileMenuProps>,
-  rerender: (
-    ui: React.ReactElement<any, string | React.JSXElementConstructor<any>>
-  ) => void
-) => {
-  const finalProps = { ...props }
-  rerender(
-    <ThemeProvider theme={createTheme()}>
-      <MobileMenu {...finalProps} />
-    </ThemeProvider>
-  )
-}
-
 it('renders test ids', async () => {
   const { container } = renderComponent({
     testId
@@ -55,7 +40,7 @@ it('renders proper content', async () => {
     .mockImplementation(useStateMock(setSwiper))
     .mockImplementation(useStateMock(setSecondLevel))
     .mockImplementation(useStateMock(setThirdLevel))
-  const { container } = renderComponent({
+  renderComponent({
     testId,
     items: menuItems
   })
