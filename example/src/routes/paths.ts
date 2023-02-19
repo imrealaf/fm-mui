@@ -1,4 +1,6 @@
+// Public
 export const HOME_ROUTE = '/'
 
-export const COMPONENTS_ROUTE = '/components'
-export const RESPONSIVE_HEADER_ROUTE = `${COMPONENTS_ROUTE}/responsive-header`
+// Auth
+export const SIGN_IN_ROUTE = '/sign-in'
+export const SIGN_UP_ROUTE = '/sign-up'

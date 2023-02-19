@@ -1,9 +1,11 @@
-import { initializeApp, getApp } from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 import { getAuth, connectAuthEmulator } from 'firebase/auth'
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
 import { getStorage, connectStorageEmulator } from 'firebase/storage'
-import { getFunctions, connectFunctionsEmulator } from 'firebase/functions'
 import { Dispatch, AnyAction } from '@reduxjs/toolkit'
+
+import { logDev } from './utils'
+import { setUser, setProfile, setSettings } from './store/user'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -18,15 +20,6 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 if (process.env.NODE_ENV !== 'production') {
-  const functions = getFunctions(getApp())
-  connectFunctionsEmulator(
-    functions,
-    'localhost',
-    process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT
-      ? parseInt(process.env.REACT_APP_FUNCTIONS_EMULATOR_PORT)
-      : 5001
-  )
-
   connectAuthEmulator(
     getAuth(),
     `http://localhost:${process.env.REACT_APP_AUTH_EMULATOR_PORT || 9099}`
@@ -51,19 +44,15 @@ export const onAuthStateChanged = (
   dispatch: Dispatch<AnyAction>,
   callback?: () => void
 ) => {
-  getAuth().onAuthStateChanged(async (user) => {
-    // let data = null;
-    // if (user) {
-    //   const idTokenResult = await user.getIdTokenResult();
-    //   data = onlyNeededUserProps(user, idTokenResult.claims.userType);
-    //   console.log(idTokenResult);
-    // } else {
-    //   dispatch(setProfile(null));
-    //   dispatch(setSettings(null));
-    // }
+  getAuth().onAuthStateChanged((user) => {
+    dispatch(setUser(user))
 
-    // logDev(data, "Current User");
-    // dispatch(setUser(data));
+    if (!user) {
+      dispatch(setProfile(null))
+      dispatch(setSettings(null))
+    }
+
+    logDev(user, 'Current User')
 
     if (callback) {
       callback()

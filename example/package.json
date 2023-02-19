@@ -39,7 +39,9 @@
   "eslintConfig": {
     "rules": {
       "dot-notation": "off",
-      "no-unused-vars": "off"
+      "no-unused-vars": "off",
+      "no-async-promise-executor": "off",
+      "prefer-promise-reject-errors": "off"
     }
   },
   "browserslist": {
