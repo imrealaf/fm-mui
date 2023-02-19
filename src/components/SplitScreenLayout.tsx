@@ -1,7 +1,5 @@
 import React from 'react'
-import { Box, Grid, GridProps, styled, SxProps, Theme } from '@mui/material'
-
-import config from '../config'
+import { Grid, GridProps, styled } from '@mui/material'
 
 export interface SplitScreenLayoutProps {
   contentLeft: React.ReactNode
@@ -13,11 +11,11 @@ export interface SplitScreenLayoutProps {
   fullHeight?: boolean
 }
 
-const StyledSplitScreenLayout = styled(Grid)<Partial<SplitScreenLayoutProps>>(
-  ({ fullHeight }) => ({
-    height: fullHeight ? '100vh' : 'auto'
-  })
-)
+const StyledSplitScreenLayout = styled(Grid, {
+  shouldForwardProp: (prop) => prop !== 'fullHeight'
+})<Partial<SplitScreenLayoutProps>>(({ fullHeight }) => ({
+  height: fullHeight ? '100vh' : 'auto'
+}))
 
 const defaultContentProps: GridProps = {
   display: 'flex',

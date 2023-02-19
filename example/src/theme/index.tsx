@@ -147,6 +147,39 @@ let theme = createTheme({
     },
     h6: {
       ...headingStyles
+    },
+    button: {
+      fontWeight: 700
+    }
+  },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'standard'
+      },
+      styleOverrides: {
+        root: {
+          '& input:-webkit-autofill, & input:-webkit-autofill:hover, & input:-webkit-autofill:focus, & input:-webkit-autofill:active':
+            {
+              WebkitBoxShadow: '0 0 0 30px white inset !important'
+            }
+        }
+      }
+    },
+    MuiButton: {
+      defaultProps: {
+        variant: 'contained',
+        disableElevation: true
+      }
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          '&:last-child': {
+            paddingBottom: 0
+          }
+        }
+      }
     }
   }
 })

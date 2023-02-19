@@ -17,133 +17,100 @@ import {
 function useDb() {
   const db = getFirestore()
 
-  const getDocs = (
-    collection: string
-  ): Promise<Record<string, any>[] | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const docs: Record<string, any>[] = []
-      try {
-        const query = await getDocsFirebase(firebaseCollection(db, collection))
-        query.forEach((doc) => {
-          docs.push({
-            id: doc.id,
-            ...doc.data()
-          })
+  const getDocs = async (collection: string) => {
+    const docs: Record<string, any>[] = []
+    try {
+      const query = await getDocsFirebase(firebaseCollection(db, collection))
+      query.forEach((doc) => {
+        docs.push({
+          id: doc.id,
+          ...doc.data()
         })
-        resolve(docs)
-      } catch (error) {
-        reject(error)
-      }
-    })
+      })
+      return docs
+    } catch (error) {
+      return error
+    }
   }
 
-  const getDocsWithQuery = (
+  const getDocsWithQuery = async (
     collection: string,
     ...queryConstraints: QueryConstraint[]
-  ): Promise<Record<string, any>[] | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const ref = firebaseCollection(db, collection)
-      const q = query(ref, ...queryConstraints)
-      const docs: Record<string, any>[] = []
-      try {
-        const query = await getDocsFirebase(q)
-        query.forEach((doc) => {
-          docs.push({
-            id: doc.id,
-            ...doc.data()
-          } as Record<string, any>)
-        })
-        resolve(docs as Record<string, any>[])
-      } catch (error) {
-        reject(error)
-      }
-    })
+  ) => {
+    const ref = firebaseCollection(db, collection)
+    const q = query(ref, ...queryConstraints)
+    const docs: Record<string, any>[] = []
+    try {
+      const query = await getDocsFirebase(q)
+      query.forEach((doc) => {
+        docs.push({
+          id: doc.id,
+          ...doc.data()
+        } as Record<string, any>)
+      })
+      return docs
+    } catch (error) {
+      return error
+    }
   }
 
-  const getDoc = (
-    collection: string,
-    id: string
-  ): Promise<Record<string, any> | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const ref = firebaseDoc(db, collection, id)
-      try {
-        const doc = await getDocFirebase(ref)
-        if (doc.exists()) {
-          resolve({
-            id: doc.id,
-            ...doc.data()
-          })
-        } else {
-          reject({
-            code: 'db/doc-doesnt-exists'
-          })
+  const getDoc = async (collection: string, id: string) => {
+    const ref = firebaseDoc(db, collection, id)
+    try {
+      const doc = await getDocFirebase(ref)
+      if (doc.exists()) {
+        return {
+          id: doc.id,
+          ...doc.data()
         }
-      } catch (error) {
-        reject(error)
+      } else {
+        return Promise.reject({
+          code: 'db/doc-doesnt-exists'
+        })
       }
-    })
+    } catch (error) {
+      return error
+    }
   }
 
-  const addDoc = (
-    collection: string,
-    data: any
-  ): Promise<Record<string, any> | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const ref = firebaseCollection(db, collection)
-      try {
-        const doc = await addDocFirebase(ref, data)
-        resolve(doc)
-      } catch (error) {
-        reject(error)
-      }
-    })
+  const addDoc = async (collection: string, data: any) => {
+    const ref = firebaseCollection(db, collection)
+    try {
+      const doc = await addDocFirebase(ref, data)
+      return doc
+    } catch (error) {
+      return error
+    }
   }
 
-  const setDoc = (
-    collection: string,
-    data: any,
-    id: string
-  ): Promise<Record<string, any> | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const ref = firebaseDoc(db, collection, id)
-      try {
-        const doc = await setDocFirebase(ref, data)
-        resolve(doc)
-      } catch (error) {
-        reject(error)
-      }
-    })
+  const setDoc = async (collection: string, data: any, id: string) => {
+    const ref = firebaseDoc(db, collection, id)
+    try {
+      const doc = await setDocFirebase(ref, data)
+      return doc
+    } catch (error) {
+      return error
+    }
   }
 
-  const updateDoc = (
-    collection: string,
-    id: string,
-    data: any
-  ): Promise<Record<string, any> | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const ref = firebaseDoc(db, collection, id)
-      try {
-        const doc = await setDocFirebase(ref, data)
-        resolve(doc)
-      } catch (error) {
-        reject(error)
-      }
-    })
+  const updateDoc = async (collection: string, id: string, data: any) => {
+    const ref = firebaseDoc(db, collection, id)
+    try {
+      const doc = await setDocFirebase(ref, data)
+      return doc
+    } catch (error) {
+      return error
+    }
   }
 
-  const deleteDoc = (
-    collection: string,
-    id: string
-  ): Promise<boolean | unknown> => {
-    return new Promise(async (resolve, reject) => {
-      const ref = firebaseDoc(db, collection, id)
-      try {
-        await deleteDocFirebase(ref)
-        resolve(true)
-      } catch (error) {
-        reject(error)
-      }
-    })
+  const deleteDoc = async (collection: string, id: string) => {
+    const ref = firebaseDoc(db, collection, id)
+    try {
+      await deleteDocFirebase(ref)
+      return true
+    } catch (error) {
+      return error
+    }
   }
 
   return {

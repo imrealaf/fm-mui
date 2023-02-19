@@ -9,7 +9,9 @@ export interface ButtonProps extends MuiButtonProps {
   pill?: boolean
 }
 
-const StyledButton = styled(MuiButton)<ButtonProps>(({ pill }) => ({
+const StyledButton = styled(MuiButton, {
+  shouldForwardProp: (prop) => prop !== 'pill'
+})<ButtonProps>(({ pill }) => ({
   ...(pill && {
     borderRadius: 30
   })

@@ -5,7 +5,7 @@ import { getStorage, connectStorageEmulator } from 'firebase/storage'
 import { Dispatch, AnyAction } from '@reduxjs/toolkit'
 
 import { logDev } from './utils'
-import { setUser, setProfile, setSettings } from './store/user'
+import { setUser, setSettings, sanitizeUserData } from './store/user'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -45,14 +45,16 @@ export const onAuthStateChanged = (
   callback?: () => void
 ) => {
   getAuth().onAuthStateChanged((user) => {
-    dispatch(setUser(user))
+    logDev(user, 'Current User')
 
     if (!user) {
-      dispatch(setProfile(null))
+      dispatch(setUser(null))
       dispatch(setSettings(null))
+    } else {
+      const userData = sanitizeUserData(user)
+      dispatch(setUser(userData))
+      logDev(userData, 'User Data')
     }
-
-    logDev(user, 'Current User')
 
     if (callback) {
       callback()

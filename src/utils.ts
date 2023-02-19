@@ -24,9 +24,14 @@ export const formatPhoneNumber = (value = '') => {
   )}-${currentValue.slice(6, 10)}`
 }
 
+export type ChangeEventData = {
+  name: string
+  value: any
+}
+
 export const handleTextChange = (
   event: React.ChangeEvent,
-  onChange: (data: { name: string; value: string }) => void
+  onChange: (data: ChangeEventData) => void
 ) => {
   const target = event.target as HTMLInputElement
   const value = target.value
@@ -41,7 +46,7 @@ export const handleTextChange = (
 
 export const handlePhoneChange = (
   event: React.ChangeEvent,
-  onChange: (data: { name: string; value: string }) => void
+  onChange: (data: ChangeEventData) => void
 ) => {
   const target = event.target as HTMLInputElement
   const value = target.value
@@ -60,7 +65,7 @@ export const handlePhoneChange = (
 
 export const handleSelectChange = (
   event: SelectChangeEvent<unknown>,
-  onChange: (data: { name: string; value: string }) => void
+  onChange: (data: ChangeEventData) => void
 ) => {
   const target = event.target as HTMLSelectElement
   const name = target.name

@@ -1,3 +1,4 @@
+import { User } from 'firebase/auth'
 import { dbCollections } from '../config'
 import { useAppDispatch, useAppSelector, useDb } from '.'
 import {
@@ -16,44 +17,32 @@ function useSettings() {
   const user = useAppSelector(selectUser)
   const { getDoc, updateDoc, setDoc } = useDb()
 
-  const getSettings = async (
-    onSuccess?: () => void,
-    onError?: (error: unknown) => void
-  ) => {
-    if (!user) return
-
+  const getSettings = async (authUser?: User) => {
+    if (!authUser || !user) return
+    const uid = authUser ? authUser.uid : user?.uid
     try {
-      const doc = (await getDoc(dbCollections.settings, user.uid)) as Record<
+      const doc = (await getDoc(dbCollections.settings, uid)) as Record<
         string,
         any
       >
       dispatch(setSettingsState(doc))
-      if (onSuccess) onSuccess()
+      return doc
     } catch (error) {
-      console.log(error)
-      if (onError) onError(error)
+      return error
     }
   }
 
-  const createSettings = async (
-    onSuccess?: () => void,
-    onError?: (error: unknown) => void
-  ) => {
+  const createSettings = async () => {
     if (!user) return
     try {
       await setDoc(dbCollections.settings, initialSettingsState, user.uid)
-      if (onSuccess) onSuccess()
+      return true
     } catch (error) {
-      console.log(error)
-      if (onError) onError(error)
+      return error
     }
   }
 
-  const updateSettings = async (
-    data: any,
-    onSuccess?: () => void,
-    onError?: (error: unknown) => void
-  ) => {
+  const updateSettings = async (data: any) => {
     if (!user) return
 
     const newData = {
@@ -64,10 +53,10 @@ function useSettings() {
     try {
       await updateDoc(dbCollections.settings, user.uid, newData)
       dispatch(setSettingsState(newData))
-      if (onSuccess) onSuccess()
+      return true
     } catch (error) {
       console.log(error)
-      if (onError) onError(error)
+      return error
     }
   }
 

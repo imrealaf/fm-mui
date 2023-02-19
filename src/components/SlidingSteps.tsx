@@ -1,13 +1,11 @@
 import React from 'react'
 import {
   Box,
-  Button,
   styled,
   Stepper,
   Step,
   StepLabel,
   Typography,
-  ButtonProps,
   LinearProgress,
   alpha,
   Card,
@@ -20,10 +18,16 @@ import {
   StepLabelProps,
   TypographyProps,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  IconButton,
+  IconButtonProps
 } from '@mui/material'
 import { Swiper as ReactSwiper, SwiperProps } from 'swiper/react'
 import { EffectFade } from 'swiper'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+
+import Button, { ButtonProps } from './Button'
 import { useBreakpoint } from '../hooks'
 import clsx from 'clsx'
 
@@ -50,7 +54,11 @@ export interface SlidingStepsProps extends SwiperProps {
   prevBtnProps?: ButtonProps
   skipBtnProps?: ButtonProps
   nextBtnText?: string
+  nextBtnArrow?: boolean
+  nextBtnArrowProps?: IconButtonProps
   prevBtnText?: string
+  prevBtnArrow?: boolean
+  prevBtnArrowProps?: IconButtonProps
   finalBtnText?: string
   nextBtnDisabled?: boolean
   ContainerComponent?: typeof Card | typeof Box
@@ -61,7 +69,7 @@ export interface SlidingStepsProps extends SwiperProps {
   LinearProgressProps?: LinearProgressProps
   CounterTextProps?: TypographyProps
   CircularProgressProps?: CircularProgressProps
-  alignActions?: 'flex-start' | 'flex-end' | 'center'
+  alignActions?: 'flex-start' | 'flex-end' | 'center' | 'space-between'
   backdropOpacity?: number
   onNext(skip: boolean): void
   onPrev(): void
@@ -113,6 +121,10 @@ const SlidingSteps = ({
   nextBtnProps,
   prevBtnProps,
   skipBtnProps,
+  nextBtnArrow,
+  prevBtnArrow,
+  nextBtnArrowProps,
+  prevBtnArrowProps,
   nextBtnText = 'Next',
   prevBtnText = 'Back',
   finalBtnText = 'Complete',
@@ -148,11 +160,7 @@ const SlidingSteps = ({
   }
 
   const handleNextClick = (skip: boolean = false) => {
-    if (isLastStep && onComplete) {
-      onComplete()
-    } else {
-      onNext(skip)
-    }
+    onNext(skip)
   }
 
   const getCounter = (variant: 'text' | 'dots') => {
@@ -198,6 +206,12 @@ const SlidingSteps = ({
         />
       </Box>
     )
+  }
+
+  const finalNextBtnProps = {
+    ...nextBtnProps,
+    disabled: nextBtnDisabled,
+    onClick: () => handleNextClick()
   }
 
   return (
@@ -278,9 +292,17 @@ const SlidingSteps = ({
         >
           {/* Previous button */}
           {activeIndex > 0 && (
-            <Button {...prevBtnProps} onClick={onPrev}>
-              {prevBtnText}
-            </Button>
+            <>
+              {prevBtnArrow ? (
+                <IconButton {...prevBtnArrowProps} onClick={onPrev}>
+                  <ArrowBackIcon />
+                </IconButton>
+              ) : (
+                <Button {...prevBtnProps} onClick={onPrev}>
+                  {prevBtnText}
+                </Button>
+              )}
+            </>
           )}
 
           {/* Skip button */}
@@ -291,13 +313,21 @@ const SlidingSteps = ({
           )}
 
           {/* Next button */}
-          <Button
-            {...nextBtnProps}
-            disabled={nextBtnDisabled}
-            onClick={() => handleNextClick()}
-          >
-            {isLastStep ? finalBtnText : nextBtnText}
-          </Button>
+          {isLastStep ? (
+            <Button {...finalNextBtnProps} onClick={onComplete}>
+              {finalBtnText}
+            </Button>
+          ) : nextBtnArrow ? (
+            <IconButton
+              {...nextBtnArrowProps}
+              disabled={nextBtnDisabled}
+              onClick={() => handleNextClick()}
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          ) : (
+            <Button {...finalNextBtnProps}>{nextBtnText}</Button>
+          )}
         </Box>
       ) : completedActions ? (
         completedActions

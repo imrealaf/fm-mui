@@ -3,13 +3,13 @@ import { ResponsiveMain } from 'fm-mui'
 
 import { LayoutProps } from '.'
 import { mainMenu } from '../menus'
-import Header from '../components/Header'
+import PrivateHeader from '../components/PrivateHeader'
 import SideNav from '../components/SideNav'
 
 const PrivateLayout = ({ route }: LayoutProps) => {
   return (
     <>
-      <Header mobileMenuItems={mainMenu} />
+      <PrivateHeader mobileMenuItems={mainMenu} />
       <ResponsiveMain drawer={<SideNav items={mainMenu} />}>
         {route}
       </ResponsiveMain>

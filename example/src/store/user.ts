@@ -6,6 +6,28 @@ import { RootState } from '.'
 
 const settingsKey = `${storageKey}/settings`
 
+export const sanitizeUserData = (user: User) => {
+  const {
+    uid,
+    email,
+    emailVerified,
+    displayName,
+    photoURL,
+    metadata,
+    providerData
+  } = user
+  const data = {
+    uid,
+    email,
+    emailVerified,
+    displayName,
+    photoURL,
+    metadata: { ...metadata },
+    providerData
+  } as User
+  return data
+}
+
 export interface AppState {
   user: User | null
   profile: Record<string, any> | null

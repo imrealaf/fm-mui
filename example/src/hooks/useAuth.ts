@@ -1,6 +1,12 @@
 // import React from 'react'
 // import { getFirestore } from 'firebase/firestore'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  signOut as firebaseSignOut,
+  AuthError
+} from 'firebase/auth'
 import useSettings from './useSettings'
 
 // import { useAppDispatch, useAppSelector } from '.'
@@ -12,23 +18,42 @@ const useAuth = () => {
   const { getSettings } = useSettings()
   //   const db = getFirestore()
 
-  const signInWithEmail = async (
-    email: string,
-    password: string,
-    onSuccess?: () => void,
-    onError?: (error: unknown) => void
-  ) => {
+  const userExists = async (email: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      getSettings(() => {
-        if (onSuccess) setTimeout(onSuccess)
-      })
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email)
+      if (signInMethods.length > 0) {
+        return true
+      } else {
+        return Promise.reject({
+          code: 'auth/user-doesnt-exist',
+          message: `We couldn't find an account with email ${email}`
+        } as AuthError)
+      }
     } catch (error) {
-      if (onError) onError(error)
+      return error as AuthError
     }
   }
 
-  return { auth, signInWithEmail }
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password)
+      await getSettings(user)
+      return user
+    } catch (error) {
+      return error as AuthError
+    }
+  }
+
+  const signOut = async () => {
+    try {
+      await firebaseSignOut(auth)
+      return true
+    } catch (error) {
+      return error as AuthError
+    }
+  }
+
+  return { auth, userExists, signInWithEmail, signOut }
 }
 
 export default useAuth

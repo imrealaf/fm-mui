@@ -31,7 +31,9 @@
     "react-dom": "link:../node_modules/react-dom",
     "react-redux": "^8.0.5",
     "react-scripts": "link:../node_modules/react-scripts",
-    "typescript": "link:../node_modules/typescript"
+    "swiper": "^9.0.5",
+    "typescript": "link:../node_modules/typescript",
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
