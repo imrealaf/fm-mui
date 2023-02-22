@@ -1,4 +1,4 @@
-import * as paths from '../paths'
+import * as paths from 'routes/paths'
 
 import HomeRoute from './HomeRoute'
 

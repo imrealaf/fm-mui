@@ -97,6 +97,7 @@
   ],
   "dependencies": {
     "clsx": "^1.2.1",
+    "es-mime-types": "^0.1.4",
     "hamburger-react": "^2.5.0",
     "hamburgers": "^1.2.1",
     "lodash": "^4.17.21",

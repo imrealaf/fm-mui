@@ -1,16 +1,17 @@
 import React from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
-import { selectUser } from '../../store/user'
+import { useAppSelector } from 'hooks'
+import { SIGN_IN_ROUTE } from 'routes/paths'
+import { selectUser } from 'store/user'
 
 const PrivateRoutes = () => {
   const { pathname } = useLocation()
-  const user = useSelector(selectUser)
+  const user = useAppSelector(selectUser)
   return user !== null ? (
     <Outlet />
   ) : (
-    <Navigate to={`/sign-in?ref=${encodeURI(pathname)}`} />
+    <Navigate to={`${SIGN_IN_ROUTE}?ref=${encodeURI(pathname)}`} replace />
   )
 }
 

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { User } from 'firebase/auth'
 
-import { storageKey } from '../config'
+import { storageKey } from 'config'
 import { RootState } from '.'
 
 const settingsKey = `${storageKey}/settings`

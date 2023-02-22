@@ -2,14 +2,14 @@ import React from 'react'
 import {
   Card as MuiCard,
   CardProps as MuiCardProps,
-  CardContent,
+  Box,
+  BoxProps,
   CardHeader,
   CardHeaderProps,
   CardMedia,
   CardMediaProps,
   CardActions,
   CardActionsProps,
-  CardContentProps,
   styled
 } from '@mui/material'
 
@@ -19,7 +19,7 @@ export interface CardProps extends MuiCardProps {
   media?: CardMediaProps
   actions?: React.ReactNode
   actionsProps?: CardActionsProps
-  contentProps?: CardContentProps
+  contentProps?: BoxProps
 }
 
 const elevation = {
@@ -39,6 +39,7 @@ const StyledCard = styled(MuiCard)<CardProps>(
     ...(variant === 'outlined' || variant === 'outlinedElevation'
       ? {
           ...(elevationOnHover && {
+            cursor: 'pointer',
             '&:hover': {
               boxShadow:
                 variant === 'outlined'
@@ -64,7 +65,9 @@ const Card = ({
     <StyledCard {...rest}>
       {header && <CardHeader {...header} />}
       {media && <CardMedia {...media} />}
-      <CardContent {...contentProps}>{children}</CardContent>
+      <Box p={2} {...contentProps}>
+        {children}
+      </Box>
       {actions && <CardActions {...actionsProps}>{actions}</CardActions>}
     </StyledCard>
   )

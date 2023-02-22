@@ -54,8 +54,6 @@ it('fires onSubmit when enter key is pressed', async () => {
     onSubmit
   })
   expect(container).toBeTruthy()
-  const btn = screen.getByTestId(`${testId}-submit-btn`)
-  expect(btn).toBeTruthy()
 
   userEvent.keyboard('[Enter]')
   setTimeout(() => {

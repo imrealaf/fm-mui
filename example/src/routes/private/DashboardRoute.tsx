@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box } from '@mui/material'
+
+import PrivatePage from 'components/PrivatePage'
 
 const DashboardRoute = () => {
-  return <Box>dashboard</Box>
+  return <PrivatePage>Dashboard</PrivatePage>
 }
 
 export default DashboardRoute

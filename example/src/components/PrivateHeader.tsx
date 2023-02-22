@@ -1,15 +1,17 @@
 import React from 'react'
-import { IconButton, Menu, MenuItem, Avatar } from '@mui/material'
+import { Menu, MenuItem, Avatar, IconButton } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
-import SettingsIcon from '@mui/icons-material/Settings'
 import {
   ResponsiveHeader,
   useToggle,
   useToggleByAnchor,
   MenuItemRecord
 } from 'fm-mui'
-import { useUser } from '../hooks'
+import { useNavigate } from 'react-router-dom'
+
+import Logo from './Logo'
+import { useAuth, useUser } from 'hooks'
+import { userMenuItems } from 'menus'
 
 export interface PrivateHeaderProps {
   items?: MenuItemRecord[]
@@ -22,10 +24,18 @@ const PrivateHeader = ({
 }: PrivateHeaderProps) => {
   const mobileMenu = useToggle()
   const userMenu = useToggleByAnchor()
+  const { signOut } = useAuth()
   const { getInitials } = useUser()
+  const navigate = useNavigate()
+
+  const onUserMenuItemClick = (item: MenuItemRecord) => {
+    userMenu.hide()
+    navigate(item.url as string)
+  }
+
   const actions = (
     <>
-      <IconButton size='large' onClick={userMenu.show} color='inherit'>
+      <IconButton onClick={userMenu.show}>
         <Avatar sx={{ width: 40, height: 40 }}>{getInitials()}</Avatar>
       </IconButton>
       <Menu
@@ -43,15 +53,23 @@ const PrivateHeader = ({
         open={userMenu.open}
         onClose={userMenu.hide}
       >
-        <MenuItem onClick={userMenu.hide} sx={{ minHeight: 'auto' }}>
-          <ManageAccountsIcon fontSize='small' sx={{ mr: 1 }} />
-          My Account
-        </MenuItem>
-        <MenuItem onClick={userMenu.hide} sx={{ minHeight: 'auto' }}>
-          <SettingsIcon fontSize='small' sx={{ mr: 1 }} />
-          Settings
-        </MenuItem>
-        <MenuItem onClick={userMenu.hide} sx={{ minHeight: 'auto' }}>
+        {userMenuItems.map((item: MenuItemRecord) => (
+          <MenuItem
+            key={item.title}
+            onClick={() => onUserMenuItemClick(item)}
+            sx={{ minHeight: 'auto' }}
+          >
+            {item.icon &&
+              React.createElement(item.icon, {
+                fontSize: 'small',
+                sx: {
+                  mr: 1
+                }
+              })}
+            {item.title}
+          </MenuItem>
+        ))}
+        <MenuItem onClick={signOut} sx={{ minHeight: 'auto' }}>
           <LogoutIcon fontSize='small' sx={{ mr: 1 }} />
           Sign Out
         </MenuItem>
@@ -62,6 +80,7 @@ const PrivateHeader = ({
   return (
     <>
       <ResponsiveHeader
+        brand={<Logo color='white' />}
         open={mobileMenu.open}
         menuItems={items}
         mobileMenuItems={mobileMenuItems}

@@ -42,7 +42,6 @@ const StyledSearchField = styled(OutlinedInput, {
 })<Partial<SearchFieldProps>>(
   ({ theme, elevationOnHover, elevationOnFocus, naked, variant }) => ({
     border: 'none',
-    // paddingLeft: theme.spacing(1),
     transition: 'all .2s ease',
     borderRadius: theme.shape.borderRadius > 0 ? 30 : 0,
 

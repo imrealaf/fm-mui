@@ -1,16 +1,19 @@
 import React from 'react'
 import { Routes as BrowserRoutes, Route } from 'react-router-dom'
 
-import { PublicLayout, AuthLayout, PrivateLayout } from '../layouts'
-import AuthRoutes from '../components/hoc/AuthRoutes'
-import PrivateRoutes from '../components/hoc/PrivateRoutes'
-import PublicRoutes from '../components/hoc/PublicRoutes'
-
+import PrivateNotFoundRoute from './private/PrivateNotFoundRoute'
+import { PublicLayout, AuthLayout, PrivateLayout } from 'layouts'
+import AuthRoutes from 'components/hoc/AuthRoutes'
+import PrivateRoutes from 'components/hoc/PrivateRoutes'
+import PublicRoutes from 'components/hoc/PublicRoutes'
 import authRoutes from './auth'
 import publicRoutes from './public'
 import privateRoutes from './private'
+import { useUser } from 'hooks'
 
 const Routes = () => {
+  const { user } = useUser()
+
   return (
     <BrowserRoutes>
       <Route element={<AuthRoutes />}>
@@ -36,6 +39,10 @@ const Routes = () => {
             />
           )
         })}
+        {/* <Route
+            path='*'
+            element={<Navigate to={paths.HOME_ROUTE} replace />}
+          /> */}
       </Route>
       <Route element={<PrivateRoutes />}>
         {privateRoutes.map((route) => {
@@ -49,6 +56,16 @@ const Routes = () => {
           )
         })}
       </Route>
+      <Route
+        path='*'
+        element={
+          user ? (
+            <PrivateLayout route={React.createElement(PrivateNotFoundRoute)} />
+          ) : (
+            <PublicLayout route={React.createElement(PrivateNotFoundRoute)} />
+          )
+        }
+      />
     </BrowserRoutes>
   )
 }

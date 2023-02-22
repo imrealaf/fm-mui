@@ -2,10 +2,14 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 
-import { onAuthStateChanged } from './initFirebase'
-import store from './store'
-import Theme from './theme'
-import App from './App'
+import { onAuthStateChanged } from 'initFirebase'
+import store from 'store'
+import Theme from 'theme'
+import App from 'App'
+
+import './index.scss'
+
+let rendered = false
 
 const renderApp = () => {
   const container = document.getElementById('root')!
@@ -21,4 +25,9 @@ const renderApp = () => {
   )
 }
 
-onAuthStateChanged(store.dispatch, () => renderApp())
+onAuthStateChanged(store.dispatch, () => {
+  if (!rendered) {
+    renderApp()
+    rendered = true
+  }
+})

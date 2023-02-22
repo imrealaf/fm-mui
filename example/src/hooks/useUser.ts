@@ -1,8 +1,26 @@
-import { useAppSelector } from '.'
-import { selectUser } from '../store/user'
+import { getAuth, updateProfile } from 'firebase/auth'
+
+import { useAppDispatch, useAppSelector, useProfile } from '.'
+import { selectUser, setUser, sanitizeUserData } from 'store/user'
 
 const useUser = () => {
   const user = useAppSelector(selectUser)
+  const dispatch = useAppDispatch()
+  const profile = useProfile()
+
+  const updateUser = async (data: Record<string, any>) => {
+    if (!user) return
+    try {
+      await updateProfile(user, data)
+      const currentUser = getAuth().currentUser
+      if (currentUser) {
+        dispatch(setUser(sanitizeUserData(currentUser)))
+      }
+      return true
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
   const getInitials = () => {
     if (!user) return ''
@@ -11,7 +29,9 @@ const useUser = () => {
 
   return {
     user,
-    getInitials
+    updateUser,
+    getInitials,
+    ...profile
   }
 }
 

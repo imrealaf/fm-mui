@@ -1,12 +1,14 @@
 import React from 'react'
 import { ResponsiveMain } from 'fm-mui'
 
-import Routes from '../routes'
+import Routes from 'routes'
 
 const Main = () => {
   return (
     <ResponsiveMain>
-      <Routes />
+      <div>
+        <Routes />
+      </div>
     </ResponsiveMain>
   )
 }

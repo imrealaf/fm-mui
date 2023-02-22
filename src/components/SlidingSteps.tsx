@@ -74,7 +74,7 @@ export interface SlidingStepsProps extends SwiperProps {
   onNext(skip: boolean): void
   onPrev(): void
   onComplete?(): void
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 const StyledSlidingSteps = styled(Box, {
@@ -147,7 +147,8 @@ const SlidingSteps = ({
   onNext,
   onPrev,
   onComplete,
-  children
+  children,
+  ...rest
 }: SlidingStepsProps) => {
   const numSteps = steps.length
   const isLastStep = numSteps - 1 === activeIndex
@@ -267,6 +268,7 @@ const SlidingSteps = ({
           <CircularProgress {...CircularProgressProps} />
         </Backdrop>
         <ReactSwiper
+          {...rest}
           modules={[EffectFade]}
           speed={speed || speeds[effect]}
           initialSlide={initialSlide}

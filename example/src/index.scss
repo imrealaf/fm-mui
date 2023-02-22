@@ -1,0 +1,46 @@
+@mixin absolute() {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.fade-enter {
+  main > div {
+    opacity: 0 !important;
+    transform: translate(0, 25px) !important;
+    z-index: 1 !important;
+    transition: all 0.2s ease !important;
+    @include absolute();
+  }
+}
+
+.fade-enter.fade-enter-active {
+  main > div {
+    opacity: 1;
+    transform: translate(0, 0) !important;
+    transition: all 0.2s ease !important;
+    @include absolute();
+  }
+}
+
+.fade-exit {
+  main > div {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+    transition: all 0.2s ease !important;
+    @include absolute();
+  }
+}
+
+.fade-exit.fade-exit-active {
+  main > div {
+    opacity: 0 !important;
+    transform: translate(0, 30px) !important;
+    transition: all 0.2s ease !important;
+    @include absolute();
+  }
+}

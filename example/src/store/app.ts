@@ -11,6 +11,8 @@ export interface SnackbarData {
 export interface AppState {
   snackbar: SnackbarData
   pending: boolean
+  editMode: boolean
+  redirect: boolean
 }
 
 const initialState: AppState = {
@@ -19,7 +21,9 @@ const initialState: AppState = {
     message: '',
     status: undefined
   },
-  pending: false
+  pending: false,
+  editMode: false,
+  redirect: false
 }
 
 export const appSlice = createSlice({
@@ -32,13 +36,22 @@ export const appSlice = createSlice({
     },
     setPending: (state, action: PayloadAction<boolean>) => {
       state.pending = action.payload
+    },
+    setEditMode: (state, action: PayloadAction<boolean>) => {
+      state.editMode = action.payload
+    },
+    setRedirect: (state, action: PayloadAction<boolean>) => {
+      state.redirect = action.payload
     }
   }
 })
 
-export const { setSnackbar, setPending } = appSlice.actions
+export const { setSnackbar, setPending, setEditMode, setRedirect } =
+  appSlice.actions
 
 export const selectSnackbar = (state: RootState) => state.app.snackbar
 export const selectPending = (state: RootState) => state.app.pending
+export const selectEditMode = (state: RootState) => state.app.editMode
+export const selectRedirect = (state: RootState) => state.app.redirect
 
 export default appSlice.reducer

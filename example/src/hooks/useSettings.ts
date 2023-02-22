@@ -1,11 +1,11 @@
 import { User } from 'firebase/auth'
-import { dbCollections } from '../config'
+import { dbCollections } from 'config'
 import { useAppDispatch, useAppSelector, useDb } from '.'
 import {
   selectUser,
   selectSettings,
   setSettings as setSettingsState
-} from '../store/user'
+} from 'store/user'
 
 const initialSettingsState = {
   darkMode: false
@@ -32,10 +32,11 @@ function useSettings() {
     }
   }
 
-  const createSettings = async () => {
-    if (!user) return
+  const createSettings = async (authUser?: User) => {
+    if (!authUser || !user) return
+    const uid = authUser ? authUser.uid : user?.uid
     try {
-      await setDoc(dbCollections.settings, initialSettingsState, user.uid)
+      await setDoc(dbCollections.settings, initialSettingsState, uid)
       return true
     } catch (error) {
       return error

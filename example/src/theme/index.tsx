@@ -1,11 +1,12 @@
 import React from 'react'
-import { ThemeProvider, CssBaseline } from '@mui/material'
+import { ThemeProvider, CssBaseline, PaletteMode } from '@mui/material'
 import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { grey, indigo } from '@mui/material/colors'
 
-// import mixins from './mixins.theme'
+import components from './components'
+import { useSettings } from 'hooks'
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -76,6 +77,9 @@ declare module '@mui/material/AppBar' {
 }
 
 declare module '@mui/material/TextField' {
+  interface TextFieldPropsVariantOverrides {
+    info: true
+  }
   interface TextFieldPropsSizeOverrides {
     large: true
   }
@@ -89,44 +93,85 @@ declare module '@mui/material/SvgIcon' {
 
 const headingStyles = {}
 
-let theme = createTheme({
+const getDesignTokens = (mode: PaletteMode) => ({
   palette: {
+    mode,
     primary: {
       main: indigo['A400']
     },
-    neutral: {
-      main: grey[500]
-    },
-    black: {
-      main: '#000'
-    },
-    white: {
-      main: '#fff'
-    },
-    grey1: {
-      main: grey[100]
-    },
-    grey2: {
-      main: grey[200]
-    },
-    grey3: {
-      main: grey[300]
-    },
-    grey4: {
-      main: grey[400]
-    },
-    grey5: {
-      main: grey[500]
-    },
-    grey6: {
-      main: grey[600]
-    },
-    grey7: {
-      main: grey[700]
-    },
-    grey8: {
-      main: grey[800]
-    }
+    ...(mode === 'light'
+      ? {
+          // palette values for light mode
+          neutral: {
+            main: grey[500]
+          },
+          black: {
+            main: '#000'
+          },
+          white: {
+            main: '#fff'
+          },
+          grey1: {
+            main: grey[100]
+          },
+          grey2: {
+            main: grey[200]
+          },
+          grey3: {
+            main: grey[300]
+          },
+          grey4: {
+            main: grey[400]
+          },
+          grey5: {
+            main: grey[500]
+          },
+          grey6: {
+            main: grey[600]
+          },
+          grey7: {
+            main: grey[700]
+          },
+          grey8: {
+            main: grey[800]
+          }
+        }
+      : {
+          // palette values for dark mode
+          neutral: {
+            main: grey[500]
+          },
+          black: {
+            main: '#000'
+          },
+          white: {
+            main: '#fff'
+          },
+          grey1: {
+            main: grey[900]
+          },
+          grey2: {
+            main: grey[800]
+          },
+          grey3: {
+            main: grey[700]
+          },
+          grey4: {
+            main: grey[600]
+          },
+          grey5: {
+            main: grey[500]
+          },
+          grey6: {
+            main: grey[400]
+          },
+          grey7: {
+            main: grey[300]
+          },
+          grey8: {
+            main: grey[200]
+          }
+        })
   },
   // mixins,
   typography: {
@@ -146,51 +191,34 @@ let theme = createTheme({
       ...headingStyles
     },
     h6: {
-      ...headingStyles
+      ...headingStyles,
+      lineHeight: '1.3'
     },
     button: {
       fontWeight: 700
     }
   },
-  components: {
-    MuiTextField: {
-      defaultProps: {
-        variant: 'standard'
-      },
-      styleOverrides: {
-        root: {
-          '& input:-webkit-autofill, & input:-webkit-autofill:hover, & input:-webkit-autofill:focus, & input:-webkit-autofill:active':
-            {
-              WebkitBoxShadow: '0 0 0 30px white inset !important'
-            }
-        }
-      }
-    },
-    MuiButton: {
-      defaultProps: {
-        variant: 'contained',
-        disableElevation: true
-      }
-    },
-    MuiCardContent: {
-      styleOverrides: {
-        root: {
-          '&:last-child': {
-            paddingBottom: 0
-          }
-        }
-      }
-    }
-  }
+  components
 })
-
-theme = responsiveFontSizes(theme)
 
 export interface ThemeProps {
   children: React.ReactNode
 }
 
 function Theme({ children }: ThemeProps) {
+  const { settings } = useSettings()
+  const [mode, setMode] = React.useState<PaletteMode>(
+    settings?.darkMode ? 'dark' : 'light'
+  )
+
+  const theme = React.useMemo(() => {
+    return responsiveFontSizes(createTheme(getDesignTokens(mode)))
+  }, [mode])
+
+  React.useEffect(() => {
+    setMode(settings?.darkMode ? 'dark' : 'light')
+  }, [settings?.darkMode])
+
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <ThemeProvider theme={theme}>

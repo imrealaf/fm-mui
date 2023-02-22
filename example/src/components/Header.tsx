@@ -1,15 +1,18 @@
 import React from 'react'
-import { IconButton, Menu, MenuItem } from '@mui/material'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { IconButton } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import {
   ResponsiveHeader,
   useToggle,
-  useToggleByAnchor,
   SearchDrawer,
-  MenuItemRecord
+  MenuItemRecord,
+  Button
 } from 'fm-mui'
-import { useSearch } from '../hooks'
+
+import Logo from './Logo'
+import UnstyledRouterLink from './UnstyledRouterLink'
+import { useSearch } from 'hooks'
+import { SIGN_IN_ROUTE } from 'routes/paths'
 
 export interface HeaderProps {
   items?: MenuItemRecord[]
@@ -20,37 +23,16 @@ const Header = ({ items = [], mobileMenuItems = [] }: HeaderProps) => {
   const { searchValue, clearSearch, submitSearch, onSearchChange } = useSearch()
   const mobileMenu = useToggle()
   const search = useToggle()
-  const userMenu = useToggleByAnchor()
   const actions = (
     <>
       <IconButton size='large' color='inherit' onClick={search.show}>
         <SearchIcon />
       </IconButton>
-      <IconButton size='large' onClick={userMenu.show} color='inherit'>
-        <AccountCircleIcon />
-      </IconButton>
-      <Menu
-        id='menu-appbar'
-        anchorEl={userMenu.anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        open={userMenu.open}
-        onClose={userMenu.hide}
-      >
-        <MenuItem onClick={userMenu.hide} sx={{ minHeight: 'auto' }}>
-          Profile
-        </MenuItem>
-        <MenuItem onClick={userMenu.hide} sx={{ minHeight: 'auto' }}>
-          My account
-        </MenuItem>
-      </Menu>
+      <UnstyledRouterLink to={SIGN_IN_ROUTE}>
+        <Button pill color='white' variant='outlined'>
+          Sign in
+        </Button>
+      </UnstyledRouterLink>
     </>
   )
 
@@ -70,6 +52,7 @@ const Header = ({ items = [], mobileMenuItems = [] }: HeaderProps) => {
         onSubmit={submitSearch}
       />
       <ResponsiveHeader
+        brand={<Logo />}
         open={mobileMenu.open}
         menuItems={items}
         mobileMenuItems={mobileMenuItems}

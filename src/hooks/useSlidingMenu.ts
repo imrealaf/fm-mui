@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 import Swiper from 'swiper'
 
 import { hasChildItems, transformData, getActiveItem } from '../utils'
@@ -10,7 +10,7 @@ function useSlidingMenu(items: MenuItemRecord[] = []) {
   const activeItem = getActiveItem(items)
   const activeIndex =
     activeItem !== null && activeItem.level ? activeItem.level : 0
-  const getGetActiveSection = (index: number = 1): MenuItemRecord | null => {
+  const getActiveSection = (index: number = 1): MenuItemRecord | null => {
     if (activeItem && activeIndex > 0) {
       if (index === 2) {
         return activeItem.parent as MenuItemRecord
@@ -22,12 +22,12 @@ function useSlidingMenu(items: MenuItemRecord[] = []) {
     }
   }
 
-  const [swiper, setSwiper] = useState<Swiper | null>(null)
-  const [secondLevel, setSecondLevel] = useState<MenuItemRecord | null>(
-    getGetActiveSection(1)
+  const [swiper, setSwiper] = React.useState<Swiper | null>(null)
+  const [secondLevel, setSecondLevel] = React.useState<MenuItemRecord | null>(
+    getActiveSection(1)
   )
-  const [thirdLevel, setThirdLevel] = useState<MenuItemRecord | null>(
-    getGetActiveSection(2)
+  const [thirdLevel, setThirdLevel] = React.useState<MenuItemRecord | null>(
+    getActiveSection(2)
   )
 
   const onInit = (swiperInstance: Swiper) => {

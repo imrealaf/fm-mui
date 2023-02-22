@@ -110,6 +110,8 @@ const StyledResponsiveHeader = styled(AppBar, {
     },
 
     '.ResponsiveHeader-brand': {
+      display: 'inline-flex',
+      alignItems: 'center',
       [theme.breakpoints.down('sm')]: {
         ...(brandPosition === 'left' && {
           marginLeft: theme.spacing(8)
@@ -264,10 +266,10 @@ const ResponsiveHeader = ({
             </>
           ) : (
             <>
-              <Box>
+              <Box display='flex' alignItems='center'>
                 {brand && <Box className='ResponsiveHeader-brand'>{brand}</Box>}
               </Box>
-              <Box display='flex'>
+              <Box display='flex' alignItems='center'>
                 {hasMenuItems && <DesktopMenu items={menuItems} />}
                 {actions && (
                   <Box
