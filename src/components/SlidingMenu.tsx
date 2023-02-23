@@ -95,7 +95,7 @@ const SlidingMenu = ({
             data-testid={`${testId}-menu-item-back`}
             className='SlidingMenuItem-parent'
             sx={{ pl: 1 }}
-            onClick={() => onBackClick()}
+            onClick={onBackClick}
           >
             <Box
               data-testid={`${testId}-icon-prev`}
@@ -189,7 +189,8 @@ const SlidingMenu = ({
                   'SlidingMenuItem-root',
                   item.active && activeItemClass ? activeItemClass : '',
                   {
-                    'SlidingMenuItem-active': item.active
+                    'SlidingMenuItem-active': item.active,
+                    'SlidingMenuItem-parent': hasChildItems(item)
                   }
                 )}
                 key={item.title}

@@ -9,6 +9,7 @@ import { useToggleByAnchor } from '../hooks'
 import clsx from 'clsx'
 
 export interface DesktopMenuProps {
+  testId?: string
   items: MenuItemRecord[]
 }
 
@@ -67,113 +68,117 @@ const StyledDropdown = styled(Menu)(({ theme }) => ({
   }
 }))
 
-const DesktopMenu = ({ items = [] }: DesktopMenuProps) => {
+const DesktopMenu = ({ testId = 'desktop-menu', items }: DesktopMenuProps) => {
   return (
-    <StyledDesktopMenu className='DesktopMenu-root'>
-      {items.map((item) => {
-        const dd = useToggleByAnchor()
-        const linkProps = hasChildItems(item)
-          ? {
-              onClick: dd.show
-            }
-          : {}
-        return [
-          [
-            <Link
-              key={item.title}
-              color='inherit'
-              className={clsx('DesktopMenuLink-root', {
-                'DesktopMenuLink-toggle': hasChildItems(item),
-                'DesktopMenuLink-active': item.active
-              })}
-              {...linkProps}
-            >
-              {item.title}
-              {hasChildItems(item) && (
-                <Box display='inline-flex' className='DesktopMenuLink-icon'>
-                  {dd.open ? (
-                    <KeyboardArrowUpIcon />
-                  ) : (
-                    <KeyboardArrowDownIcon />
-                  )}
-                </Box>
-              )}
-            </Link>
-          ],
-          [
-            hasChildItems(item) && (
-              <StyledDropdown
+    <StyledDesktopMenu data-testid={testId} className='DesktopMenu-root'>
+      {items &&
+        items.length &&
+        items.map((item) => {
+          const dd = useToggleByAnchor()
+          const linkProps = hasChildItems(item)
+            ? {
+                onClick: dd.show
+              }
+            : {}
+          return [
+            [
+              <Link
                 key={item.title}
-                open={dd.open}
-                anchorEl={dd.anchorEl}
-                onClose={dd.hide}
-                TransitionComponent={Fade}
-                PaperProps={{
-                  className: 'DesktopMenuDropdown-root',
-                  sx: {
-                    px: 2,
-                    py: 1
-                  }
-                }}
-              >
-                {item.childItems?.map((childItem) => {
-                  const level2dd = useToggleByAnchor()
-                  const childLinkProps = hasChildItems(childItem)
-                    ? {
-                        onClick: level2dd.show
-                      }
-                    : {}
-                  return [
-                    [
-                      <Link
-                        key={childItem.title}
-                        {...childLinkProps}
-                        className={clsx('DesktopMenuDropdownLink-root', {
-                          'DesktopMenuDropdownLink-toggle':
-                            hasChildItems(childItem),
-                          'DesktopMenuDropdownLink-active': childItem.active
-                        })}
-                        color='inherit'
-                        sx={{ px: 1 }}
-                      >
-                        {childItem.title}
-                        {hasChildItems(childItem) && (
-                          <Box
-                            display='inline-flex'
-                            className='DesktopMenuDropdownLink-icon'
-                          >
-                            {level2dd.open ? (
-                              <KeyboardArrowUpIcon />
-                            ) : (
-                              <KeyboardArrowDownIcon />
-                            )}
-                          </Box>
-                        )}
-                      </Link>
-                    ],
-                    [
-                      hasChildItems(childItem) && (
-                        <Menu
-                          key={childItem.title}
-                          open={level2dd.open}
-                          anchorEl={level2dd.anchorEl}
-                          onClose={level2dd.hide}
-                        >
-                          {childItem.childItems?.map((subChildItem) => (
-                            <MenuItem key={subChildItem.title}>
-                              {subChildItem.title}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      )
-                    ]
-                  ]
+                color='inherit'
+                className={clsx('DesktopMenuLink-root', {
+                  'DesktopMenuLink-toggle': hasChildItems(item),
+                  'DesktopMenuLink-active': item.active
                 })}
-              </StyledDropdown>
-            )
+                {...linkProps}
+              >
+                {item.title}
+                {hasChildItems(item) && (
+                  <Box display='inline-flex' className='DesktopMenuLink-icon'>
+                    {dd.open ? (
+                      <KeyboardArrowUpIcon data-testid={`${testId}-icon-up`} />
+                    ) : (
+                      <KeyboardArrowDownIcon
+                        data-testid={`${testId}-icon-down`}
+                      />
+                    )}
+                  </Box>
+                )}
+              </Link>
+            ],
+            [
+              hasChildItems(item) && (
+                <StyledDropdown
+                  key={item.title}
+                  open={dd.open}
+                  anchorEl={dd.anchorEl}
+                  onClose={dd.hide}
+                  TransitionComponent={Fade}
+                  PaperProps={{
+                    className: 'DesktopMenuDropdown-root',
+                    sx: {
+                      px: 2,
+                      py: 1
+                    }
+                  }}
+                >
+                  {item.childItems?.map((childItem) => {
+                    const level2dd = useToggleByAnchor()
+                    const childLinkProps = hasChildItems(childItem)
+                      ? {
+                          onClick: level2dd.show
+                        }
+                      : {}
+                    return [
+                      [
+                        <Link
+                          key={childItem.title}
+                          {...childLinkProps}
+                          className={clsx('DesktopMenuDropdownLink-root', {
+                            'DesktopMenuDropdownLink-toggle':
+                              hasChildItems(childItem),
+                            'DesktopMenuDropdownLink-active': childItem.active
+                          })}
+                          color='inherit'
+                          sx={{ px: 1 }}
+                        >
+                          {childItem.title}
+                          {hasChildItems(childItem) && (
+                            <Box
+                              display='inline-flex'
+                              className='DesktopMenuDropdownLink-icon'
+                            >
+                              {level2dd.open ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
+                            </Box>
+                          )}
+                        </Link>
+                      ],
+                      [
+                        hasChildItems(childItem) && (
+                          <Menu
+                            key={childItem.title}
+                            open={level2dd.open}
+                            anchorEl={level2dd.anchorEl}
+                            onClose={level2dd.hide}
+                          >
+                            {childItem.childItems?.map((subChildItem) => (
+                              <MenuItem key={subChildItem.title}>
+                                {subChildItem.title}
+                              </MenuItem>
+                            ))}
+                          </Menu>
+                        )
+                      ]
+                    ]
+                  })}
+                </StyledDropdown>
+              )
+            ]
           ]
-        ]
-      })}
+        })}
     </StyledDesktopMenu>
   )
 }

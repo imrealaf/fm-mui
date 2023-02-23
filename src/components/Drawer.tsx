@@ -8,7 +8,9 @@ import {
 
 import config, { getProp } from '../config'
 
-export interface DrawerProps extends MuiDrawerProps {}
+export interface DrawerProps extends MuiDrawerProps {
+  testId?: string
+}
 
 const StyledDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'drawerWidth'
@@ -27,10 +29,17 @@ const StyledDrawer = styled(MuiDrawer, {
   })
 )
 
-const Drawer = ({ variant, anchor, children, ...rest }: DrawerProps) => {
+const Drawer = ({
+  testId = 'drawer',
+  variant,
+  anchor,
+  children,
+  ...rest
+}: DrawerProps) => {
   const headerHeight = getProp('ResponsiveHeader', 'height')
   return (
     <StyledDrawer
+      data-testid={testId}
       anchor={anchor}
       variant={variant}
       drawerWidth={config.global.drawerWidth}

@@ -8,6 +8,7 @@ import { useBreakpoint } from '../hooks'
 const defaultProps = config.ResponsiveMain.defaultProps
 
 export interface ResponsiveMainProps {
+  testId?: string
   drawer?: React.ReactNode
   drawerPosition?: DrawerPosition
   children: React.ReactNode
@@ -57,6 +58,7 @@ const StyledMain = styled('main', {
 )
 
 const ResponsiveMain = ({
+  testId = 'responsive-main',
   drawer,
   drawerPosition = defaultProps.drawerPosition,
   children
@@ -67,6 +69,7 @@ const ResponsiveMain = ({
     <>
       {drawer && bp[config.global.desktopBpQuery] ? drawer : null}
       <StyledMain
+        data-testid={testId}
         offsetTop={headerProps.position === 'fixed'}
         offsetX={drawer !== undefined ? true : false}
         headerHeight={headerProps.height}

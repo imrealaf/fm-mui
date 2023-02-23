@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, GridProps, styled } from '@mui/material'
 
 export interface SplitScreenLayoutProps {
+  testId?: string
   contentLeft: React.ReactNode
   contentRight: React.ReactNode
   contentLeftProps?: GridProps
@@ -24,6 +25,7 @@ const defaultContentProps: GridProps = {
 }
 
 const SplitScreenLayout = ({
+  testId = 'split-screen-layout',
   fullHeight = true,
   contentLeft,
   contentRight,
@@ -33,9 +35,14 @@ const SplitScreenLayout = ({
   hideRight
 }: SplitScreenLayoutProps) => {
   return (
-    <StyledSplitScreenLayout fullHeight={fullHeight} container>
+    <StyledSplitScreenLayout
+      data-testid={testId}
+      fullHeight={fullHeight}
+      container
+    >
       {!hideLeft && (
         <Grid
+          data-testid={`${testId}-left-content`}
           item
           {...defaultContentProps}
           {...contentLeftProps}
@@ -46,6 +53,7 @@ const SplitScreenLayout = ({
       )}
       {!hideRight && (
         <Grid
+          data-testid={`${testId}-right-content`}
           item
           {...defaultContentProps}
           {...contentRightProps}
