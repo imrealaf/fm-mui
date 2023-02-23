@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { styled, List, ListItemButton, ListItemText, Box } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import { useSwipeable } from 'react-swipeable'
 
 import config, { getProps } from '../config'
 import { hasChildItems, transformData } from '../utils'
 import { MenuItemRecord, ThemeColorProp } from '../types'
+import SlidingMenu from './SlidingMenu'
+import { useSlidingMenu } from '../hooks'
 
 export interface MobileMenuProps {
   testId?: string
@@ -24,33 +25,6 @@ interface MobileMenuSectionProps {
   section: MenuItemRecord | null
   handleBackClick(): void
   handleItemClick(item: MenuItemRecord): void
-}
-
-const MobileMenuSection = ({
-  testId,
-  section,
-  handleBackClick,
-  handleItemClick
-}: MobileMenuSectionProps) => {
-  return section !== null ? (
-    <List disablePadding data-testid={`${testId}-section`}>
-      <ListItemButton sx={{ pl: 1 }} onClick={() => handleBackClick()}>
-        <ChevronLeftIcon />
-        <ListItemText
-          primary={section.title}
-          primaryTypographyProps={{
-            fontWeight: 700
-          }}
-        />
-      </ListItemButton>
-      {section.childItems?.map((item: MenuItemRecord) => (
-        <ListItemButton key={item.title} onClick={() => handleItemClick(item)}>
-          <ListItemText primary={item.title} />
-          {hasChildItems(item) && <ChevronRightIcon />}
-        </ListItemButton>
-      ))}
-    </List>
-  ) : null
 }
 
 const StlyedMobileMenu = styled(Box, {
@@ -116,18 +90,7 @@ const MobileMenu = ({
   onToggle
 }: MobileMenuProps) => {
   const headerProps = getProps('ResponsiveHeader')
-  const [swiper, setSwiper] = React.useState<typeof Swiper | any>(null)
-  const [secondLevel, setSecondLevel] = React.useState<MenuItemRecord | null>(
-    null
-  )
-  const [thirdLevel, setThirdLevel] = React.useState<MenuItemRecord | null>(
-    null
-  )
-  const hasMenuItems = items && items.length > 0
-
-  if (hasMenuItems) {
-    transformData(items)
-  }
+  const menu = useSlidingMenu(items)
 
   const swipeHandlers = useSwipeable({
     onSwipedUp: () => {
@@ -135,38 +98,9 @@ const MobileMenu = ({
     }
   })
 
-  const handleItemClick = (item: MenuItemRecord) => {
-    if (hasChildItems(item)) {
-      if (item.parent) {
-        setThirdLevel(item)
-      } else {
-        setSecondLevel(item)
-      }
-      swiper.slideNext()
-    } else {
-      // Go to url or do something else
-    }
-
-    // if (onItemClick) onItemClick(item)
-  }
-
-  const handleBackClick = () => {
-    swiper.slidePrev()
-  }
-
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
   }, [open])
-
-  useEffect(() => {
-    if (!open && swiper) {
-      setSecondLevel(null)
-      setThirdLevel(null)
-      setTimeout(() => {
-        swiper.slideTo(0)
-      }, config.MobileMenu.transitionDuration)
-    }
-  }, [open, swiper])
 
   return (
     <StlyedMobileMenu
@@ -177,49 +111,20 @@ const MobileMenu = ({
       className='MobileMenu-root'
       {...swipeHandlers}
     >
-      <Box className='MobileMenu-header'></Box>
+      <Box className='MobileMenu-header' />
       <Box className='MobileMenu-content'>
         <Box>
           {header && <Box>{header}</Box>}
           <Box display='flex'>
-            {hasMenuItems && (
-              <Swiper
-                spaceBetween={0}
-                slidesPerView={1}
-                allowTouchMove={false}
-                onSwiper={(swiperInstance) => setSwiper(swiperInstance)}
-              >
-                <SwiperSlide>
-                  <List disablePadding>
-                    {items.map((item: MenuItemRecord) => (
-                      <ListItemButton
-                        key={item.title}
-                        onClick={() => handleItemClick(item)}
-                      >
-                        <ListItemText primary={item.title} />
-                        {hasChildItems(item) && <ChevronRightIcon />}
-                      </ListItemButton>
-                    ))}
-                  </List>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <MobileMenuSection
-                    testId={testId}
-                    section={secondLevel}
-                    handleBackClick={handleBackClick}
-                    handleItemClick={handleItemClick}
-                  />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <MobileMenuSection
-                    testId={testId}
-                    section={thirdLevel}
-                    handleBackClick={handleBackClick}
-                    handleItemClick={handleItemClick}
-                  />
-                </SwiperSlide>
-              </Swiper>
-            )}
+            <SlidingMenu
+              items={menu.items}
+              activeIndex={menu.activeIndex}
+              onInit={menu.onInit}
+              onItemClick={menu.onItemClick}
+              onBackClick={menu.onBackClick}
+              secondLevel={menu.secondLevel}
+              thirdLevel={menu.thirdLevel}
+            />
           </Box>
         </Box>
         {footer && <Box>{footer}</Box>}

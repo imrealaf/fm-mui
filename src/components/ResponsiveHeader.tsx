@@ -133,8 +133,8 @@ const ResponsiveHeader = ({
   hideOnScroll = false,
   hideActionsOnToggle = false,
   open = false,
-  menuItems = [],
-  mobileMenuItems = [],
+  menuItems,
+  mobileMenuItems,
   menuColor = 'secondary',
   menuIconSize = 21,
   menuHeader,
@@ -171,7 +171,7 @@ const ResponsiveHeader = ({
 
   useEffect(() => {
     setTimeout(() => {
-      setShowActions(open && hideActionsOnToggle ? false : true)
+      setShowActions(open && hideActionsOnToggle)
     }, config.MobileMenu.transitionDuration)
   }, [open])
 
@@ -251,7 +251,7 @@ const ResponsiveHeader = ({
                   size={menuIconSize}
                   toggled={open}
                   toggle={onToggle}
-                  hideOutline={true}
+                  hideOutline
                 />
               )}
               {brand && <Box className='ResponsiveHeader-brand'>{brand}</Box>}

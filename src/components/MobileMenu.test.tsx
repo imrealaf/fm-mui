@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
 import { useStateMock } from '../test-utils'
@@ -45,10 +45,10 @@ it('renders proper content', async () => {
     items: menuItems
   })
 
-  setTimeout(() => {
+  waitFor(() => {
     expect(setSwiper).toHaveBeenCalled()
     expect(setSecondLevel).toHaveBeenCalled()
     expect(setThirdLevel).toHaveBeenCalled()
   })
-  //   expect(setThirdLevel).toHaveBeenCalled()
+  //   expect(setThirdLevel).toHaveBeenCalled() //
 })
