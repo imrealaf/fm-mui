@@ -12,6 +12,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 export interface AccordionProps extends MuiAccordionProps {
+  testId?: string
   id: string
   summary: React.ReactNode
   AccordionSummaryProps?: AccordionSummaryProps
@@ -24,6 +25,7 @@ const StyledAccordion = styled(MuiAccordion, {
 })<Partial<AccordionProps>>(() => ({}))
 
 const Accordion = ({
+  testId = 'accordion',
   id,
   summary,
   expandIcon = ExpandMoreIcon,
@@ -33,15 +35,21 @@ const Accordion = ({
   ...rest
 }: AccordionProps) => {
   return (
-    <StyledAccordion {...rest}>
+    <StyledAccordion data-testId={testId} {...rest}>
       <AccordionSummary
+        data-testId={`${testId}-summary`}
         id={id}
         expandIcon={React.createElement(expandIcon)}
         {...AccordionSummaryProps}
       >
         {summary}
       </AccordionSummary>
-      <AccordionDetails {...AccordionDetailsProps}>{children}</AccordionDetails>
+      <AccordionDetails
+        data-testId={`${testId}-details`}
+        {...AccordionDetailsProps}
+      >
+        {children}
+      </AccordionDetails>
     </StyledAccordion>
   )
 }

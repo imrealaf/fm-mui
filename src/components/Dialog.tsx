@@ -13,15 +13,17 @@ import {
 import CloseIcon from '@mui/icons-material/Close'
 
 export interface DialogProps extends MuiDialogProps {
+  testId?: string
   titleProps?: DialogTitleProps
   actions?: React.ReactNode
   actionsProps?: DialogActionsProps
   contentProps?: DialogContentProps
-  showClose: boolean
+  showClose?: boolean
   onClose(): void
 }
 
 const Dialog = ({
+  testId = 'dialog',
   title,
   titleProps,
   actions,
@@ -33,12 +35,13 @@ const Dialog = ({
   ...rest
 }: DialogProps) => {
   return (
-    <MuiDialog onClose={onClose} {...rest}>
+    <MuiDialog data-testid={testId} onClose={onClose} {...rest}>
       {title || showClose ? (
-        <DialogTitle {...titleProps}>
+        <DialogTitle data-testid={`${testId}-title`} {...titleProps}>
           {title}
           {showClose && (
             <IconButton
+              data-testid={`${testId}-close`}
               onClick={onClose}
               sx={{
                 position: 'absolute',
@@ -51,8 +54,14 @@ const Dialog = ({
           )}
         </DialogTitle>
       ) : null}
-      <DialogContent {...contentProps}>{children}</DialogContent>
-      {actions && <DialogActions {...actionsProps}>{actions}</DialogActions>}
+      <DialogContent data-testid={`${testId}-content`} {...contentProps}>
+        {children}
+      </DialogContent>
+      {actions && (
+        <DialogActions data-testid={`${testId}-actions`} {...actionsProps}>
+          {actions}
+        </DialogActions>
+      )}
     </MuiDialog>
   )
 }

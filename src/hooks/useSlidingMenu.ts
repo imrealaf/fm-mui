@@ -53,12 +53,10 @@ function useSlidingMenu(items: MenuItemRecord[] = []) {
     swiper?.slidePrev()
   }
 
-  const resetMenu = (timeout: number = 0) => {
+  const resetMenu = () => {
     setSecondLevel(null)
     setThirdLevel(null)
-    setTimeout(() => {
-      swiper?.slideTo(0)
-    }, timeout)
+    swiper?.slideTo(0)
   }
 
   return {

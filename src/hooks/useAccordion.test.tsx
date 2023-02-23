@@ -9,10 +9,11 @@ it('implements initial state', () => {
 })
 
 it('toggles properly', () => {
-  const { result } = renderHook(() => useAccordion())
+  const { result } = renderHook(() => useAccordion()) //
+  const event = {} as React.SyntheticEvent
 
   act(() => {
-    result.current.toggle('panel-1')
+    result.current.toggle('panel-1')(event, true)
   })
 
   waitFor(() => {

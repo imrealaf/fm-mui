@@ -6,6 +6,7 @@ import {
 } from '@mui/material'
 
 export interface ButtonProps extends MuiButtonProps {
+  testId?: string
   pill?: boolean
 }
 
@@ -17,9 +18,14 @@ const StyledButton = styled(MuiButton, {
   })
 }))
 
-const Button = ({ pill = false, children, ...rest }: ButtonProps) => {
+const Button = ({
+  testId = 'button',
+  pill = false,
+  children,
+  ...rest
+}: ButtonProps) => {
   return (
-    <StyledButton pill={pill} {...rest}>
+    <StyledButton data-testid={testId} pill={pill} {...rest}>
       {children}
     </StyledButton>
   )

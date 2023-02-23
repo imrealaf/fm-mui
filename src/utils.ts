@@ -2,9 +2,9 @@ import { SelectChangeEvent } from '@mui/material'
 
 import { MenuItemRecord } from './types'
 
-export const formatPhoneNumber = (value = '') => {
+export const formatPhoneNumber = (value: string) => {
   // return nothing if no value
-  if (!value) return value
+  if (!value) return ''
 
   // only allows 0-9 inputs
   const currentValue = value.replace(/[^\d]/g, '')
@@ -37,11 +37,10 @@ export const handleTextChange = (
   const value = target.value
   const name = target.getAttribute('name') as string
 
-  if (onChange)
-    onChange({
-      name,
-      value
-    })
+  onChange({
+    name,
+    value
+  })
 }
 
 export const handlePhoneChange = (
@@ -55,11 +54,10 @@ export const handlePhoneChange = (
   if (value.length < 15) {
     const cleaned = value.replace(/\D/g, '')
 
-    if (onChange)
-      onChange({
-        name,
-        value: formatPhoneNumber(cleaned)
-      })
+    onChange({
+      name,
+      value: formatPhoneNumber(cleaned)
+    })
   }
 }
 
@@ -71,11 +69,10 @@ export const handleSelectChange = (
   const name = target.name
   const value = target.value
 
-  if (onChange)
-    onChange({
-      name,
-      value
-    })
+  onChange({
+    name,
+    value
+  })
 }
 
 export const handleEnterKey = (
@@ -90,7 +87,7 @@ export const handleEnterKey = (
 export const hasChildItems = (item: MenuItemRecord) =>
   item.childItems && item.childItems.length > 0
 
-export const transformData = (items: MenuItemRecord[] = []) => {
+export const transformData = (items: MenuItemRecord[]) => {
   items.forEach((item) => {
     item.level = 0
     if (hasChildItems(item)) {
@@ -110,7 +107,7 @@ export const transformData = (items: MenuItemRecord[] = []) => {
 }
 
 export const getActiveItem = (
-  items: MenuItemRecord[] = []
+  items: MenuItemRecord[]
 ): MenuItemRecord | null => {
   const actives: MenuItemRecord[] = []
   items.forEach((item) => {

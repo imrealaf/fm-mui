@@ -16,8 +16,8 @@
     "build": "rollup -c --bundleConfigAsCjs",
     "dev": "rollup -c --bundleConfigAsCjs --watch",
     "lint": "eslint ./src",
-    "test": "react-scripts test --env=jsdom --coverage --silent",
-    "test:watch": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --coverage --silent --watchAll=false",
+    "test:watch": "react-scripts test --env=jsdom --coverage --silent",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
@@ -120,7 +120,8 @@
     ],
     "collectCoverageFrom": [
       "src/components/*",
-      "src/hooks/*"
+      "src/hooks/*",
+      "src/utils.ts"
     ],
     "coveragePathIgnorePatterns": [
       "src/components/index.ts",

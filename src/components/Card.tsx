@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 
 export interface CardProps extends MuiCardProps {
+  testId?: string
   elevationOnHover?: boolean
   header?: CardHeaderProps
   media?: CardMediaProps
@@ -53,6 +54,7 @@ const StyledCard = styled(MuiCard)<CardProps>(
 )
 
 const Card = ({
+  testId = 'card',
   header,
   media,
   actions,
@@ -62,13 +64,17 @@ const Card = ({
   ...rest
 }: CardProps) => {
   return (
-    <StyledCard {...rest}>
-      {header && <CardHeader {...header} />}
-      {media && <CardMedia {...media} />}
+    <StyledCard data-testid={testId} {...rest}>
+      {header && <CardHeader data-testid={`${testId}-header`} {...header} />}
+      {media && <CardMedia data-testid={`${testId}-media`} {...media} />}
       <Box p={2} {...contentProps}>
         {children}
       </Box>
-      {actions && <CardActions {...actionsProps}>{actions}</CardActions>}
+      {actions && (
+        <CardActions data-testid={`${testId}-actions`} {...actionsProps}>
+          {actions}
+        </CardActions>
+      )}
     </StyledCard>
   )
 }
