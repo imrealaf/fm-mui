@@ -1,10 +1,10 @@
 import React from 'react'
 import { styled } from '@mui/material'
 
-import config, { getProps } from '../config'
+import config, { getProps } from 'config'
 import Drawer from './Drawer'
 import SearchField, { SearchFieldProps } from './SearchField'
-import { useBreakpoint } from '../hooks'
+import { useBreakpoint } from 'hooks'
 
 export interface SearchDrawerProps extends SearchFieldProps {
   open: boolean

@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box, Container, Typography } from '@mui/material'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import Drawer from '../components/Drawer'
-import ResponsiveHeader from '../components/ResponsiveHeader'
-import ResponsiveMain from '../components/ResponsiveMain'
+import Drawer from 'components/Drawer'
+import ResponsiveHeader from 'components/ResponsiveHeader'
+import ResponsiveMain from 'components/ResponsiveMain'
 
 export default {
   title: 'Layout/ResponsiveMain',

@@ -6,7 +6,7 @@ import {
   styled
 } from '@mui/material'
 
-import config, { getProp } from '../config'
+import config, { getProp } from 'config'
 
 export interface DrawerProps extends MuiDrawerProps {
   testId?: string

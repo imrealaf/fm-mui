@@ -3,7 +3,7 @@ import { render, screen, fireEvent, getByTestId } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom/extend-expect'
 
-import menuItems from '../data/menuItems'
+import menuItems from 'data/menuItems'
 import { ThemeProvider, createTheme } from '@mui/material'
 import ResponsiveHeader, { ResponsiveHeaderProps } from './ResponsiveHeader'
 

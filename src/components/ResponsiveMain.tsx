@@ -1,9 +1,9 @@
 import React from 'react'
 import { styled } from '@mui/material'
 
-import config, { getProps } from '../config'
-import { DrawerPosition } from '../types'
-import { useBreakpoint } from '../hooks'
+import config, { getProps } from 'config'
+import { DrawerPosition } from 'types'
+import { useBreakpoint } from 'hooks'
 
 const defaultProps = config.ResponsiveMain.defaultProps
 

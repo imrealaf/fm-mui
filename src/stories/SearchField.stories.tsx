@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import SearchField from '../components/SearchField'
+
+import SearchField from 'components/SearchField'
 
 export default {
   title: 'Inputs/SearchField',

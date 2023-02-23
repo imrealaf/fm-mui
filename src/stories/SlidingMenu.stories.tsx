@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Box, Button } from '@mui/material'
 
-import menuItems from '../data/menuItems'
-import { useSlidingMenu, useToggle } from '../hooks'
-import Drawer from '../components/Drawer'
-import SlidingMenu from '../components/SlidingMenu'
+import menuItems from 'data/menuItems'
+import { useSlidingMenu, useToggle } from 'hooks'
+import Drawer from 'components/Drawer'
+import SlidingMenu from 'components/SlidingMenu'
 
 export default {
   title: 'Navigation/SlidingMenu',

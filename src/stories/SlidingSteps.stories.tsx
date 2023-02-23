@@ -11,9 +11,9 @@ import {
 import { SwiperSlide } from 'swiper/react'
 import validator from 'validator'
 
-import { handleTextChange } from '../utils'
-import SlidingSteps from '../components/SlidingSteps'
-import { useSlidingSteps, useToggle } from '../hooks'
+import { handleTextChange } from 'utils'
+import SlidingSteps from 'components/SlidingSteps'
+import { useSlidingSteps } from 'hooks'
 
 export default {
   title: 'Navigation/SlidingSteps',

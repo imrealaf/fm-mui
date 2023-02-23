@@ -28,7 +28,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import Button, { ButtonProps } from './Button'
-import { useBreakpoint } from '../hooks'
+import { useBreakpoint } from 'hooks'
 import clsx from 'clsx'
 
 export interface SlidingStepsRecord {

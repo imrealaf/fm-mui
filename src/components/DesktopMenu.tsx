@@ -3,9 +3,9 @@ import { Box, Link, Menu, Fade, styled, MenuItem } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
-import { hasChildItems } from '../utils'
-import { MenuItemRecord } from '../types'
-import { useToggleByAnchor } from '../hooks'
+import { hasChildItems } from 'utils'
+import { MenuItemRecord } from 'types'
+import { useToggleByAnchor } from 'hooks'
 import clsx from 'clsx'
 
 export interface DesktopMenuProps {

@@ -89,6 +89,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
     "ts-jest": "^29.0.5",
+    "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "^3.7.5",
     "validator": "^13.9.0"
   },
@@ -125,7 +126,8 @@
     ],
     "coveragePathIgnorePatterns": [
       "src/components/index.ts",
-      "src/hooks/index.ts"
+      "src/hooks/index.ts",
+      "src/stories/*"
     ],
     "transformIgnorePatterns": [
       "!node_modules/"

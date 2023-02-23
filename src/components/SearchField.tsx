@@ -13,7 +13,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search'
 import CloseIcon from '@mui/icons-material/Close'
 
-import { handleEnterKey, handleTextChange } from '../utils'
+import { handleEnterKey, handleTextChange } from 'utils'
 
 export interface SearchFieldProps extends OutlinedInputProps {
   variant?: 'filled' | 'outlined'

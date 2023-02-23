@@ -14,7 +14,7 @@ import {
   handlePhoneChange,
   handleEnterKey,
   handleSelectChange
-} from '../utils'
+} from 'utils'
 
 export default {
   title: 'Utilities/Event Handlers',

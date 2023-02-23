@@ -3,9 +3,9 @@ import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Box, Button } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 
-import { useToggle } from '../hooks'
-import Drawer from '../components/Drawer'
-import CollapsingMenu from '../components/CollapsingMenu'
+import { useToggle } from 'hooks'
+import Drawer from 'components/Drawer'
+import CollapsingMenu from 'components/CollapsingMenu'
 
 const items = [
   {

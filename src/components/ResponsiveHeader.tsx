@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { AppBar, AppBarProps, styled, Toolbar, Box } from '@mui/material'
 import { Spiral as Hamburger } from 'hamburger-react'
 
-import config, { setProps } from '../config'
+import config, { setProps } from 'config'
 import MobileMenu from './MobileMenu'
 import DesktopMenu from './DesktopMenu'
-import { ThemeColorProp, MenuItemRecord } from '../types'
-import { useBreakpoint } from '../hooks'
+import { ThemeColorProp, MenuItemRecord } from 'types'
+import { useBreakpoint } from 'hooks'
 
 const defaultProps = config.ResponsiveHeader.defaultProps
 const BURGER_HEIGHT = 48

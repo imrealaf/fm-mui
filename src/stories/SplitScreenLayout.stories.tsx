@@ -2,10 +2,10 @@ import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import { Box, TextField, Typography } from '@mui/material'
 
-import Card from '../components/Card'
-import Button from '../components/Button'
-import SplitScreenLayout from '../components/SplitScreenLayout'
-import { useBreakpoint } from '../hooks'
+import Card from 'components/Card'
+import Button from 'components/Button'
+import SplitScreenLayout from 'components/SplitScreenLayout'
+import { useBreakpoint } from 'hooks'
 
 export default {
   title: 'Layout/SplitScreenLayout',

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Button from '../components/Button'
+
+import Button from 'components/Button'
 
 export default {
   title: 'Extended/Button',
@@ -15,7 +16,7 @@ export default {
 
 const Template: ComponentStory<typeof Button> = (args) => {
   return (
-    <Button {...args} pill={true}>
+    <Button {...args} pill>
       Button
     </Button>
   )

@@ -15,9 +15,9 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import clsx from 'clsx'
 
-import { hasChildItems } from '../utils'
-import { MenuItemRecord } from '../types'
-import { useToggle } from '../hooks'
+import { hasChildItems } from 'utils'
+import { MenuItemRecord } from 'types'
+import { useToggle } from 'hooks'
 
 export interface CollapsingMenuProps {
   testId?: string

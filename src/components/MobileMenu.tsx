@@ -4,11 +4,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { useSwipeable } from 'react-swipeable'
 
-import config, { getProps } from '../config'
-import { hasChildItems, transformData } from '../utils'
-import { MenuItemRecord, ThemeColorProp } from '../types'
+import config, { getProps } from 'config'
+import { hasChildItems, transformData } from 'utils'
+import { MenuItemRecord, ThemeColorProp } from 'types'
 import SlidingMenu from './SlidingMenu'
-import { useSlidingMenu } from '../hooks'
+import { useSlidingMenu } from 'hooks'
 
 export interface MobileMenuProps {
   testId?: string
@@ -18,13 +18,6 @@ export interface MobileMenuProps {
   header?: React.ReactNode
   footer?: React.ReactNode
   onToggle?(): void
-}
-
-interface MobileMenuSectionProps {
-  testId?: string
-  section: MenuItemRecord | null
-  handleBackClick(): void
-  handleItemClick(item: MenuItemRecord): void
 }
 
 const StlyedMobileMenu = styled(Box, {
@@ -115,17 +108,15 @@ const MobileMenu = ({
       <Box className='MobileMenu-content'>
         <Box>
           {header && <Box>{header}</Box>}
-          <Box display='flex'>
-            <SlidingMenu
-              items={menu.items}
-              activeIndex={menu.activeIndex}
-              onInit={menu.onInit}
-              onItemClick={menu.onItemClick}
-              onBackClick={menu.onBackClick}
-              secondLevel={menu.secondLevel}
-              thirdLevel={menu.thirdLevel}
-            />
-          </Box>
+          <SlidingMenu
+            items={menu.items}
+            activeIndex={menu.activeIndex}
+            onInit={menu.onInit}
+            onItemClick={menu.onItemClick}
+            onBackClick={menu.onBackClick}
+            secondLevel={menu.secondLevel}
+            thirdLevel={menu.thirdLevel}
+          />
         </Box>
         {footer && <Box>{footer}</Box>}
       </Box>

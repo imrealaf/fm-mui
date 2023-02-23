@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Accordion from '../components/Accordion'
 import { Box, Typography } from '@mui/material'
-import { useAccordion } from '../hooks'
+
+import Accordion from 'components/Accordion'
+import { useAccordion } from 'hooks'
 
 export default {
   title: 'Extended/Accordion',

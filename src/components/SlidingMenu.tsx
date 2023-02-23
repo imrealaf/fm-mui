@@ -17,8 +17,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import swiper from 'swiper'
 import clsx from 'clsx'
 
-import { hasChildItems } from '../utils'
-import { MenuItemRecord } from '../types'
+import { hasChildItems } from 'utils'
+import { MenuItemRecord } from 'types'
 
 export interface SlidingMenuProps {
   testId?: string

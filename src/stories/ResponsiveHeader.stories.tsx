@@ -4,9 +4,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import SearchIcon from '@mui/icons-material/Search'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import menuItems from '../data/menuItems'
-import ResponsiveHeader from '../components/ResponsiveHeader'
-import { useToggle, useToggleByAnchor } from '../hooks'
+import menuItems from 'data/menuItems'
+import ResponsiveHeader from 'components/ResponsiveHeader'
+import { useToggle, useToggleByAnchor } from 'hooks'
 
 export default {
   title: 'Layout/ResponsiveHeader',

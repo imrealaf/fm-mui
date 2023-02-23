@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import SearchDrawer from '../components/SearchDrawer'
 import { Box, Button } from '@mui/material'
 
-import { handleTextChange } from '../utils'
-import { useToggle } from '../hooks'
+import SearchDrawer from 'components/SearchDrawer'
+import { useToggle } from 'hooks'
 
 export default {
   title: 'Offcanvas/SearchDrawer',
