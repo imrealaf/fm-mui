@@ -39,6 +39,7 @@ export interface SlidingStepsRecord {
 }
 
 export interface SlidingStepsProps extends SwiperProps {
+  testId?: string
   steps?: SlidingStepsRecord[]
   pending?: boolean
   progress?: number
@@ -71,7 +72,7 @@ export interface SlidingStepsProps extends SwiperProps {
   CircularProgressProps?: CircularProgressProps
   alignActions?: 'flex-start' | 'flex-end' | 'center' | 'space-between'
   backdropOpacity?: number
-  onNext(skip: boolean): void
+  onNext(event: React.MouseEvent<HTMLButtonElement>): void
   onPrev(): void
   onComplete?(): void
   children?: React.ReactNode
@@ -107,6 +108,7 @@ const StyledSlidingSteps = styled(Box, {
 }))
 
 const SlidingSteps = ({
+  testId = 'sliding-steps',
   steps = [],
   pending = false,
   progress = 0,
@@ -160,13 +162,14 @@ const SlidingSteps = ({
     fade: 300
   }
 
-  const handleNextClick = (skip: boolean = false) => {
-    onNext(skip)
-  }
-
   const getCounter = (variant: 'text' | 'dots') => {
     return (
-      <Box className='SlidingSteps-counter' textAlign='center' mb={1}>
+      <Box
+        data-testid={`${testId}-counter`}
+        className='SlidingSteps-counter'
+        textAlign='center'
+        mb={1}
+      >
         {variant === 'dots' ? (
           <Box className='SlidingStepsCounter-dots'>
             {steps.map((step, i) => (
@@ -195,6 +198,7 @@ const SlidingSteps = ({
   const getProgressBar = () => {
     return (
       <Box
+        data-testid={`${testId}-progress-bar`}
         className='SlidingStepsProgress-root'
         textAlign='center'
         mb={showCounter ? 1 : 3}
@@ -212,11 +216,12 @@ const SlidingSteps = ({
   const finalNextBtnProps = {
     ...nextBtnProps,
     disabled: nextBtnDisabled,
-    onClick: () => handleNextClick()
+    onClick: onNext
   }
 
   return (
     <StyledSlidingSteps
+      data-testid={testId}
       className='SlidingSteps-root'
       backdropOpacity={backdropOpacity}
     >
@@ -224,6 +229,7 @@ const SlidingSteps = ({
       {/* Stepper */}
       {showProgress && progressVariant === 'stepper' && bp.smAndUp && (
         <Stepper
+          data-testid={`${testId}-stepper`}
           {...StepperProps}
           className='SlidingStepsProgress-stepper'
           activeStep={activeIndex}
@@ -296,11 +302,19 @@ const SlidingSteps = ({
           {activeIndex > 0 && (
             <>
               {prevBtnArrow ? (
-                <IconButton {...prevBtnArrowProps} onClick={onPrev}>
+                <IconButton
+                  data-testid={`${testId}-prev-icon-btn`}
+                  {...prevBtnArrowProps}
+                  onClick={onPrev}
+                >
                   <ArrowBackIcon />
                 </IconButton>
               ) : (
-                <Button {...prevBtnProps} onClick={onPrev}>
+                <Button
+                  data-testid={`${testId}-prev-btn`}
+                  {...prevBtnProps}
+                  onClick={onPrev}
+                >
                   {prevBtnText}
                 </Button>
               )}
@@ -309,26 +323,37 @@ const SlidingSteps = ({
 
           {/* Skip button */}
           {activeStep.optional && (
-            <Button {...skipBtnProps} onClick={() => handleNextClick(true)}>
+            <Button
+              data-testid={`${testId}-skip-btn`}
+              {...skipBtnProps}
+              onClick={onNext}
+            >
               Skip
             </Button>
           )}
 
           {/* Next button */}
           {isLastStep ? (
-            <Button {...finalNextBtnProps} onClick={onComplete}>
+            <Button
+              data-testid={`${testId}-complete-btn`}
+              {...finalNextBtnProps}
+              onClick={onComplete}
+            >
               {finalBtnText}
             </Button>
           ) : nextBtnArrow ? (
             <IconButton
+              data-testid={`${testId}-next-icon-btn`}
               {...nextBtnArrowProps}
               disabled={nextBtnDisabled}
-              onClick={() => handleNextClick()}
+              onClick={onNext}
             >
               <ArrowForwardIcon />
             </IconButton>
           ) : (
-            <Button {...finalNextBtnProps}>{nextBtnText}</Button>
+            <Button data-testid={`${testId}-next-btn`} {...finalNextBtnProps}>
+              {nextBtnText}
+            </Button>
           )}
         </Box>
       ) : completedActions ? (

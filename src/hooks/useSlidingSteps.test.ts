@@ -101,6 +101,9 @@ it('gets active step', () => {
 
   act(() => {
     result.current.getActiveStep()
+    result.current.isActiveStepOptional()
+    result.current.isActiveStepCompleted()
+    result.current.isActiveStepValid()
   })
 
   waitFor(() => {

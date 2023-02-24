@@ -11,7 +11,7 @@ import {
 import { SwiperSlide } from 'swiper/react'
 import validator from 'validator'
 
-import { handleTextChange } from 'utils'
+import { handleTextChange, ChangeEventData } from 'utils'
 import SlidingSteps from 'components/SlidingSteps'
 import { useSlidingSteps } from 'hooks'
 
@@ -66,11 +66,15 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
     passwordConfirm: ''
   })
 
-  const onChange = ({ name, value }) => {
+  const onChange = ({ name, value }: ChangeEventData) => {
     setData({
       ...data,
       [name]: value
     })
+  }
+
+  const handlePrev = () => {
+    goToPrev()
   }
 
   const handleNext = () => {
@@ -218,7 +222,7 @@ const Template: ComponentStory<typeof SlidingSteps> = (args) => {
           activeIndex={activeIndex}
           onInit={onInit}
           onActiveIndexChange={onActiveIndexChange}
-          onPrev={goToPrev}
+          onPrev={handlePrev}
           onNext={handleNext}
           initialSlide={initialSlide}
           nextBtnDisabled={!isActiveStepValid()}

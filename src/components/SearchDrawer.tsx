@@ -7,6 +7,7 @@ import SearchField, { SearchFieldProps } from './SearchField'
 import { useBreakpoint } from 'hooks'
 
 export interface SearchDrawerProps extends SearchFieldProps {
+  testId?: string
   open: boolean
   onClose(): void
 }
@@ -43,7 +44,8 @@ const StyledSearchDrawer = styled(Drawer, {
 }))
 
 const SearchDrawer = ({
-  open = false,
+  testId,
+  open,
   value = '',
   onChanged,
   onClose,
@@ -52,9 +54,11 @@ const SearchDrawer = ({
 }: SearchDrawerProps) => {
   const bp = useBreakpoint()
   const headerProps = getProps('ResponsiveHeader')
+  const id = testId || 'search-drawer'
 
   return (
     <StyledSearchDrawer
+      data-testid={id}
       anchor='top'
       open={open}
       headerHeight={headerProps.height}
