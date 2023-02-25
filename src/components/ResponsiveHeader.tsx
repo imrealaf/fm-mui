@@ -171,7 +171,7 @@ const ResponsiveHeader = ({
 
   useEffect(() => {
     setTimeout(() => {
-      setShowActions(open && hideActionsOnToggle)
+      setShowActions(open && hideActionsOnToggle ? false : true)
     }, config.MobileMenu.transitionDuration)
   }, [open])
 
@@ -270,7 +270,7 @@ const ResponsiveHeader = ({
                 {brand && <Box className='ResponsiveHeader-brand'>{brand}</Box>}
               </Box>
               <Box display='flex' alignItems='center'>
-                {hasMenuItems && <DesktopMenu items={menuItems} />}
+                {hasMenuItems && <DesktopMenu items={menuItems || undefined} />}
                 {actions && (
                   <Box
                     data-testid={`${testId}-actions`}

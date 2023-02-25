@@ -4,7 +4,7 @@ import Swiper from 'swiper'
 import { hasChildItems, transformData, getActiveItem } from '../utils'
 import { MenuItemRecord } from '../types'
 
-function useSlidingMenu(items: MenuItemRecord[] = []) {
+function useSlidingMenu(items: MenuItemRecord[]) {
   transformData(items)
 
   const activeItem = getActiveItem(items)
@@ -13,9 +13,9 @@ function useSlidingMenu(items: MenuItemRecord[] = []) {
   const getActiveSection = (index: number = 1): MenuItemRecord | null => {
     if (activeItem && activeIndex > 0) {
       if (index === 2) {
-        return activeItem.parent as MenuItemRecord
-      } else {
         return activeItem.grandparent as MenuItemRecord
+      } else {
+        return activeItem.parent as MenuItemRecord
       }
     } else {
       return null
@@ -43,7 +43,11 @@ function useSlidingMenu(items: MenuItemRecord[] = []) {
       }
       swiper?.slideNext()
     } else {
-      // Go to url or do something else
+      // if (item.path) {
+      //   navigate(item.path)
+      // } else if (item.href) {
+      //   window.location.href = item.href
+      // }
     }
 
     // if (onItemClick) onItemClick(item)

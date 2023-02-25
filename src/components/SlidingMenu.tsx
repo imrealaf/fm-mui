@@ -17,12 +17,14 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import swiper from 'swiper'
 import clsx from 'clsx'
 
+import UnstyledRouterLink from './UnstyledRouterLink'
 import { hasChildItems } from 'utils'
 import { MenuItemRecord } from 'types'
 
 export interface SlidingMenuProps {
   testId?: string
   items: MenuItemRecord[]
+  router?: boolean
   title?: React.ReactNode
   variant?: 'default' | 'lined'
   activeIndex?: number
@@ -65,6 +67,7 @@ const StyledSlidingMenu = styled(Box)<Partial<SlidingMenuProps>>(
 const SlidingMenu = ({
   testId = 'sliding-menu',
   items = [],
+  router,
   title,
   variant = 'default',
   activeIndex = 0,
@@ -84,6 +87,58 @@ const SlidingMenu = ({
   onItemClick,
   onBackClick
 }: SlidingMenuProps) => {
+  const getItem = (item: MenuItemRecord, key?: string) => {
+    const btnProps =
+      hasChildItems(item) || item.href
+        ? {
+            onClick: () => onItemClick(item)
+          }
+        : {}
+    return (
+      <ListItemButton
+        key={key}
+        data-testid={`${testId}-menu-item${
+          hasChildItems(item) ? '-parent' : ''
+        }`}
+        selected={item.active}
+        disableRipple={item.active}
+        disableTouchRipple={item.active}
+        className={clsx(
+          'SlidingMenuItem-root',
+          item.active && activeItemClass ? activeItemClass : '',
+          {
+            'SlidingMenuItem-active': item.active,
+            'SlidingMenuItem-parent': hasChildItems(item)
+          }
+        )}
+        {...btnProps}
+      >
+        {item.icon && (
+          <ListItemIcon>
+            {React.createElement(item.icon, itemIconProps)}
+          </ListItemIcon>
+        )}
+        <ListItemText
+          primary={item.title}
+          primaryTypographyProps={
+            item.active
+              ? { ...itemTypographyProps, ...activeItemTypographyProps }
+              : itemTypographyProps
+          }
+        />
+        {hasChildItems(item) && (
+          <Box
+            data-testid={`${testId}-icon-next`}
+            className='SlidingMenuItem-icon SlidingMenuItemIcon-next'
+            display='inline-flex'
+          >
+            {React.createElement(nextIcon, nextIconProps)}
+          </Box>
+        )}
+      </ListItemButton>
+    )
+  }
+
   const getMenuSection = (section: MenuItemRecord | null) => {
     return section !== null ? (
       <Box
@@ -113,39 +168,15 @@ const SlidingMenu = ({
               sx={{ ml: 1 }}
             />
           </ListItemButton>
-          {section.childItems?.map((item: MenuItemRecord) => (
-            <ListItemButton
-              data-testid={`${testId}-menu-item`}
-              selected={item.active}
-              disableRipple={item.active}
-              disableTouchRipple={item.active}
-              className={clsx(
-                'SlidingMenuItem-root',
-                item.active && activeItemClass ? activeItemClass : '',
-                {
-                  'SlidingMenuItem-active': item.active
-                }
-              )}
-              key={item.title}
-              onClick={() => onItemClick(item)}
-            >
-              {item.icon && (
-                <ListItemIcon>
-                  {React.createElement(item.icon, itemIconProps)}
-                </ListItemIcon>
-              )}
-              <ListItemText
-                primary={item.title}
-                primaryTypographyProps={
-                  item.active
-                    ? { ...itemTypographyProps, ...activeItemTypographyProps }
-                    : itemTypographyProps
-                }
-              />
-              {hasChildItems(item) &&
-                React.createElement(nextIcon, nextIconProps)}
-            </ListItemButton>
-          ))}
+          {section.childItems?.map((item: MenuItemRecord) =>
+            router && item.path ? (
+              <UnstyledRouterLink key={item.title} to={item.path}>
+                {getItem(item)}
+              </UnstyledRouterLink>
+            ) : (
+              getItem(item, item.title)
+            )
+          )}
         </List>
       </Box>
     ) : null
@@ -177,49 +208,15 @@ const SlidingMenu = ({
                 />
               </ListItem>
             )}
-            {items.map((item: MenuItemRecord) => (
-              <ListItemButton
-                data-testid={`${testId}-menu-item${
-                  hasChildItems(item) ? '-parent' : ''
-                }`}
-                selected={item.active}
-                disableRipple={item.active}
-                disableTouchRipple={item.active}
-                className={clsx(
-                  'SlidingMenuItem-root',
-                  item.active && activeItemClass ? activeItemClass : '',
-                  {
-                    'SlidingMenuItem-active': item.active,
-                    'SlidingMenuItem-parent': hasChildItems(item)
-                  }
-                )}
-                key={item.title}
-                onClick={() => onItemClick(item)}
-              >
-                {item.icon && (
-                  <ListItemIcon>
-                    {React.createElement(item.icon, itemIconProps)}
-                  </ListItemIcon>
-                )}
-                <ListItemText
-                  primary={item.title}
-                  primaryTypographyProps={
-                    item.active
-                      ? { ...itemTypographyProps, ...activeItemTypographyProps }
-                      : itemTypographyProps
-                  }
-                />
-                {hasChildItems(item) && (
-                  <Box
-                    data-testid={`${testId}-icon-next`}
-                    className='SlidingMenuItem-icon SlidingMenuItemIcon-next'
-                    display='inline-flex'
-                  >
-                    {React.createElement(nextIcon, nextIconProps)}
-                  </Box>
-                )}
-              </ListItemButton>
-            ))}
+            {items.map((item: MenuItemRecord) =>
+              router && item.path ? (
+                <UnstyledRouterLink key={item.title} to={item.path}>
+                  {getItem(item)}
+                </UnstyledRouterLink>
+              ) : (
+                getItem(item, item.title)
+              )
+            )}
           </List>
         </SwiperSlide>
         <SwiperSlide>{getMenuSection(secondLevel)}</SwiperSlide>

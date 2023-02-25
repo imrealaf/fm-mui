@@ -10,7 +10,7 @@ import clsx from 'clsx'
 
 export interface DesktopMenuProps {
   testId?: string
-  items: MenuItemRecord[]
+  items?: MenuItemRecord[]
 }
 
 const StyledDesktopMenu = styled(Box)(({ theme }) => ({

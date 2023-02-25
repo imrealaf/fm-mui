@@ -49,7 +49,7 @@ const SignInForm = ({
         onChange={(e) => handleTextChange(e, onChanged)}
         onKeyDown={(e) =>
           handleEnterKey(e, () => {
-            if (isActiveStepValid && isActiveStepValid()) onNext(false)
+            if (isActiveStepValid && isActiveStepValid()) onNext(e)
           })
         }
       />

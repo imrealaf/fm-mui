@@ -90,15 +90,23 @@ export const hasChildItems = (item: MenuItemRecord) =>
 export const transformData = (items: MenuItemRecord[]) => {
   items.forEach((item) => {
     item.level = 0
+    item.active =
+      location.pathname === item.path || location.pathname === item.href
     if (hasChildItems(item)) {
       item.childItems?.forEach((childItem) => {
         childItem.level = 1
         childItem.parent = item
+        childItem.active =
+          location.pathname === childItem.path ||
+          location.pathname === childItem.href
         if (hasChildItems(childItem)) {
           childItem.childItems?.forEach((subChildItem) => {
             subChildItem.level = 2
             subChildItem.parent = childItem
             subChildItem.grandparent = childItem.parent
+            subChildItem.active =
+              location.pathname === subChildItem.path ||
+              location.pathname === subChildItem.href
           })
         }
       })

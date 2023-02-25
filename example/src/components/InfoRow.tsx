@@ -1,6 +1,8 @@
 import { Grid, styled } from '@mui/material'
 
-const InfoRow = styled(Grid)<{
+const InfoRow = styled(Grid, {
+  shouldForwardProp: (prop) => prop !== 'disableHover'
+})<{
   path: string | undefined
   disableHover: boolean | undefined
 }>(({ theme, onClick, path, disableHover }) => ({

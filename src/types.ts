@@ -9,7 +9,8 @@ export type ThemeColorProp =
 
 export interface MenuItemRecord {
   title: string
-  url?: string
+  href?: string
+  path?: string
   active?: boolean
   childItems?: MenuItemRecord[]
   parent?: MenuItemRecord

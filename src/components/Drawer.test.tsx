@@ -31,7 +31,7 @@ it('renders without crashing', async () => {
 })
 
 it('renders proper width', async () => {
-  const { container, getByTestId } = renderComponent({
+  const { getByTestId } = renderComponent({
     testId
   })
   const drawer = getByTestId(testId)

@@ -1,7 +1,6 @@
 import * as React from 'react'
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@testing-library/react'
 
-import config from '../config'
 import { ThemeProvider, createTheme } from '@mui/material'
 import SplitScreenLayout, { SplitScreenLayoutProps } from './SplitScreenLayout'
 

@@ -30,7 +30,7 @@ const PrivateHeader = ({
 
   const onUserMenuItemClick = (item: MenuItemRecord) => {
     userMenu.hide()
-    navigate(item.url as string)
+    navigate(item.path as string)
   }
 
   const actions = (

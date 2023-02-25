@@ -10,6 +10,7 @@ const SideNav = ({ items = [] }: SideNavProps) => {
   return (
     <Drawer variant='permanent'>
       <SlidingMenu
+        router
         items={menu.items}
         activeIndex={menu.activeIndex}
         onInit={menu.onInit}

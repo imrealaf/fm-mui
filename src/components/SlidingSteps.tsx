@@ -72,7 +72,11 @@ export interface SlidingStepsProps extends SwiperProps {
   CircularProgressProps?: CircularProgressProps
   alignActions?: 'flex-start' | 'flex-end' | 'center' | 'space-between'
   backdropOpacity?: number
-  onNext(event: React.MouseEvent<HTMLButtonElement>): void
+  onNext(
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLDivElement>
+  ): void
   onPrev(): void
   onComplete?(): void
   children?: React.ReactNode

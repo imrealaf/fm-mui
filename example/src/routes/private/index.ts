@@ -1,6 +1,7 @@
 import * as paths from 'routes/paths'
 
 import DashboardRoute from './DashboardRoute'
+import PostsRoute from './PostsRoute'
 import AccountRoute from './AccountRoute'
 import PersonalInfoRoute from './account/PersonalInfoRoute'
 import AccountNameRoute from './account/AccountNameRoute'
@@ -13,6 +14,10 @@ const privateRoutes = [
   {
     component: DashboardRoute,
     path: paths.DASHBOARD_ROUTE
+  },
+  {
+    component: PostsRoute,
+    path: paths.POSTS_ROUTE
   },
   {
     component: AccountRoute,

@@ -2,7 +2,6 @@ import * as React from 'react'
 import { render, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 
-import config from '../config'
 import { ThemeProvider, createTheme } from '@mui/material'
 import SearchDrawer, { SearchDrawerProps } from './SearchDrawer'
 

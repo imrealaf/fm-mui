@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react'
-import { styled, List, ListItemButton, ListItemText, Box } from '@mui/material'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { styled, Box } from '@mui/material'
 import { useSwipeable } from 'react-swipeable'
 
 import config, { getProps } from 'config'
-import { hasChildItems, transformData } from 'utils'
 import { MenuItemRecord, ThemeColorProp } from 'types'
 import SlidingMenu from './SlidingMenu'
 import { useSlidingMenu } from 'hooks'

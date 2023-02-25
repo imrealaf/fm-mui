@@ -32,6 +32,7 @@
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
     "react-redux": "^8.0.5",
+    "react-router-dom": "link:../node_modules/react-router-dom",
     "react-scripts": "link:../node_modules/react-scripts",
     "react-transition-group": "^4.4.5",
     "swiper": "^9.0.5",
